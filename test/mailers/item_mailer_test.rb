@@ -2,10 +2,13 @@ require "test_helper"
 
 class ItemMailerTest < ActionMailer::TestCase
   test "in_stock" do
-    mail = ItemMailer.in_stock
+    item = items(:one)
+    subscriber = subscribers(:one)
+
+    mail = ItemMailer.with(item: item, subscriber: subscriber).in_stock
+
     assert_equal "In stock", mail.subject
-    assert_equal [ "to@example.org" ], mail.to
-    assert_equal [ "from@example.com" ], mail.from
-    assert_match "Hi", mail.body.encoded
+    assert_equal [ subscriber.email ], mail.to
+    assert_match item.name, mail.body.encoded
   end
 end
