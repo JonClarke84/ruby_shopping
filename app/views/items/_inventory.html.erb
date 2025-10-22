@@ -1,0 +1,11 @@
+<% if item.quantity? %>
+  <p><%= item.quantity %> in stock</p>
+<% else %>
+  <p>Out of stock</p>
+  <p>Email me when available.</p>
+
+  <%= form_with model: [item, Subscriber.new] do |form| %>
+    <%= form.email_field :email, placeholder: "your@email.com", required: true %>
+    <%= form.submit "Submit" %>
+  <% end %>
+<% end %>

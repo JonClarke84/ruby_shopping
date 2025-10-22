@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: %i[show edit update]
+  allow_unauthenticated_access only: %i[index show]
+  before_action :set_item, only: %i[show edit update destroy]
 
   def index
     @items = Item.all
@@ -32,12 +33,17 @@ class ItemsController < ApplicationController
     end
   end
 
+  def destroy
+    @item.destroy
+    redirect_to items_path
+  end
+
   private
     def set_item
       @item = Item.find(params[:id])
     end
 
     def item_params
-      params.expect(item: [ :name, :quantity ])
+      params.expect(item: [ :name, :quantity, :description, :featured_image ])
     end
 end

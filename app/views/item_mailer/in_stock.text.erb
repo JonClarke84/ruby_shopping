@@ -1,0 +1,6 @@
+Good news!
+
+<%= @item.name %> has been added to the list.
+<%= item_url(@item) %>
+
+Unsubscribe: <%= unsubscribe_url(token: params[:subscriber].generate_token_for(:unsubscribe)) %>

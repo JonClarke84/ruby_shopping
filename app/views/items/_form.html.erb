@@ -3,8 +3,18 @@
     <%= form.label :name %>
     <%= form.text_field :name %>
 
-    <%= form.label :quantity %>
-    <%= form.text_field :quantity %>
+    <%= form.label :quantity, style: "display: block" %>
+    <%= form.number_field :quantity %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.rich_textarea :description %>
+  </div>
+
+  <div>
+    <%= form.label :featured_image, style: "display: block" %>
+    <%= form.file_field :featured_image, accept: "image/*" %>
   </div>
 
   <div>

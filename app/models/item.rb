@@ -1,4 +1,9 @@
 class Item < ApplicationRecord
+  include Notifications
+
+  has_one_attached :featured_image
+  has_rich_text :description
+
   validates :name, presence: true
-  validates :quantity, presence: true
+  validates :quantity, presence: true, numericality: { greater_than_or_equal_to: 0 }
 end

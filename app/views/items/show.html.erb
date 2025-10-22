@@ -1,9 +1,19 @@
-<h1><%= @item.name %></h1>
+<% cache @item do %>
+  <h1><%= @item.name %></h1>
+  <%= @item.description %>
+<% end %>
 
-<p>Quantity: <%= @item.quantity %></p>
+<%= render "inventory", item: @item %>
 
-<h2>Edit</h2>
-<%= link_to "Edit", edit_item_path(@item) %>
+<%= image_tag @item.featured_image if @item.featured_image.attached? %>
+
+<% if authenticated? %>
+  <h2>Edit</h2>
+  <%= link_to "Edit", edit_item_path(@item) %>
+
+  <h2>Delete</h2>
+  <%= button_to "Delete", @item, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+<% end %>
 
 <footer>
   <%= link_to "Back to items", items_path %>
