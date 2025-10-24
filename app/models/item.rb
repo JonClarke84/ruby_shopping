@@ -1,6 +1,9 @@
 class Item < ApplicationRecord
   include Notifications
 
+  has_many :list_items
+  has_many :lists, through: :list_items
+
   has_one_attached :featured_image
   has_rich_text :description
 

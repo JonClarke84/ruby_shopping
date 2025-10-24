@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_21_212656) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_24_204345) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -54,7 +54,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_21_212656) do
     t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "inventory_count"
+  end
+
+  create_table "list_items", force: :cascade do |t|
+    t.integer "list_id", null: false
+    t.integer "item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_list_items_on_item_id"
+    t.index ["list_id"], name: "index_list_items_on_list_id"
+  end
+
+  create_table "lists", force: :cascade do |t|
+    t.date "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -84,6 +98,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_21_212656) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "list_items", "items"
+  add_foreign_key "list_items", "lists"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscribers", "items"
 end

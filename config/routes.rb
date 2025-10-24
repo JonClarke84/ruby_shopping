@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :lists
   resource :session
   resources :passwords, param: :token
 
@@ -33,6 +34,6 @@ Rails.application.routes.draw do
   #
   # delete "/items/:id", to: "items#destroy"
 
-  root "items#index"
-  resources :items
+  root "lists#index"
+  resources :lists
 end
