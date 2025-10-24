@@ -9,6 +9,8 @@
 
 # Ignore all environment files.
 /.env*
+ror-key.txt
+ror-key.txt.pub
 
 # Ignore all logfiles and tempfiles.
 /log/*
