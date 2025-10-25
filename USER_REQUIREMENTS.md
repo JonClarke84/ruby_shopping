@@ -18,25 +18,46 @@
 - As a user I expect to be able to set the shopping date and the number of days I am shopping for
 - As a user I expect the default shopping date to be today and the number of days to be a week, eg Thursday, Friday, Saturday, Sunday, Monday, Tuesday, Wednesday
 - As a user, once I have created a list I expect to be taken to the index page to start editing it
-- As a user, once I have created a list I expect the current list to be archived
+- As a user, once I have created a new list, it becomes the current list (the most recent list for my group)
+
+# Groups and Multi-Tenancy
+- As a user, when I create an account, a group is automatically created with my name
+- As the developer, when a user signs up (e.g., "Jon"), create a group named "Jon" and add the user to it
+- As a user, I can create additional groups with any name and invite other users to join
+- As a user, I can be part of multiple groups (my initial group + any groups I create or am invited to)
+- As a user, I can switch between viewing different groups' data
+- As a user, when viewing a specific group, I can only see and interact with that group's lists, items, and meals
+- As a user, I cannot see or access lists, items, or meals from groups I'm not a member of
+- As the developer, all lists, items, and meals must be scoped to a group
+- As the developer, a group has many users through a UserGroup join table
+- As the developer, items are group-specific (not shared across groups)
+- As the developer, meals are group-specific (not shared across groups)
+- Example: Jon signs up → "Jon" group created. Beth signs up → "Beth" group created. Jon invites Beth to the "Jon" group. Beth can now switch between viewing "Beth" group data and "Jon" group data. Jon creates a "Clarke" group and invites Beth. Both can now switch between "Jon", "Beth", and "Clarke" groups.
 
 ## MVP
 - Create a list
     - Sets Saturday -> Saturday only
-    - Archives current list
+    - New list becomes the current list (most recent)
 - Edit the list from the index page
     - Includes quantities (default quantity = 1)
     - No suggestions for meals or list items
     - No auto-ordering
 
 ## Technical Notes
-- **Current List**: The current list is simply `List.last`
+- **Current List**: The current list is `current_group.lists.last` (scoped to the active group)
+- **Current Group**: Stored in session; user can switch between groups they belong to
 - **Data Models**:
-  - `Item`: Master list of all possible items
-  - `ListItem`: An instance of an Item on a specific List
-  - `Meal`: Separate table for meals
-  - `ListMeal`: Junction table - a List has many ListMeals
+  - `Group`: id, name
+  - `User`: has many Groups through UserGroups (many-to-many relationship)
+  - `UserGroup`: Junction table - user_id, group_id (allows users to be in multiple groups)
+  - `List`: belongs to Group (via group_id foreign key), has date
+  - `Item`: belongs to Group (via group_id foreign key), master list of all possible items for that group
+  - `ListItem`: belongs to List and Item, has quantity and sort_order (decimal)
+  - `Meal`: belongs to Group (via group_id foreign key), separate table for meals
+  - `ListMeal`: Junction table - belongs to List and Meal
+- **Group Creation**: When a user signs up, automatically create a group with their name and add them to it via UserGroups
 - **Auto-save**: List auto-saves after each action, except text editing which requires explicit confirmation button
+- **Ordering**: ListItems use decimal/fractional sort_order (precision: 15, scale: 5) for efficient reordering
 
 ## Routing
 
@@ -48,9 +69,9 @@ get  '/lists', to: 'lists#index'     # All lists
 get  '/lists/:id', to: 'lists#show'  # View a specific list (with items and meals)
 ```
 
-### Create/Archive List
+### Create List
 ```ruby
-post '/lists', to: 'lists#create'    # Creates new list, archives current
+post '/lists', to: 'lists#create'    # Creates new list (becomes current list)
 ```
 
 ### List Items (auto-save except text edits)
