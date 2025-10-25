@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_24_204345) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_25_221159) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -49,11 +49,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_24_204345) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "items", force: :cascade do |t|
+  create_table "groups", force: :cascade do |t|
     t.string "name"
-    t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "group_id", null: false
+    t.index ["group_id"], name: "index_items_on_group_id"
   end
 
   create_table "list_items", force: :cascade do |t|
@@ -61,14 +68,35 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_24_204345) do
     t.integer "item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "quantity"
+    t.decimal "sort_order"
     t.index ["item_id"], name: "index_list_items_on_item_id"
     t.index ["list_id"], name: "index_list_items_on_list_id"
+  end
+
+  create_table "list_meals", force: :cascade do |t|
+    t.integer "list_id", null: false
+    t.integer "meal_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["list_id"], name: "index_list_meals_on_list_id"
+    t.index ["meal_id"], name: "index_list_meals_on_meal_id"
   end
 
   create_table "lists", force: :cascade do |t|
     t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "group_id", null: false
+    t.index ["group_id"], name: "index_lists_on_group_id"
+  end
+
+  create_table "meals", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "group_id", null: false
+    t.index ["group_id"], name: "index_meals_on_group_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -88,18 +116,36 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_24_204345) do
     t.index ["item_id"], name: "index_subscribers_on_item_id"
   end
 
+  create_table "user_groups", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_user_groups_on_group_id"
+    t.index ["user_id"], name: "index_user_groups_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "items", "groups"
   add_foreign_key "list_items", "items"
   add_foreign_key "list_items", "lists"
+  add_foreign_key "list_meals", "lists"
+  add_foreign_key "list_meals", "meals"
+  add_foreign_key "lists", "groups"
+  add_foreign_key "meals", "groups"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscribers", "items"
+  add_foreign_key "user_groups", "groups"
+  add_foreign_key "user_groups", "users"
 end
