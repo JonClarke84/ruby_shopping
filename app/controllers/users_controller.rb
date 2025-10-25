@@ -11,6 +11,7 @@ class UsersController < ApplicationController
 
     if @user.save
       start_new_session_for @user
+      session.delete(:return_to_after_authenticating)
       redirect_to root_path, notice: "Welcome!"
     else
       render :new, status: :unprocessable_entity
