@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_25_221159) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_26_231329) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -79,6 +79,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_25_221159) do
     t.integer "meal_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "date"
     t.index ["list_id"], name: "index_list_meals_on_list_id"
     t.index ["meal_id"], name: "index_list_meals_on_meal_id"
   end
@@ -105,6 +106,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_25_221159) do
     t.string "user_agent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "selected_group_id"
+    t.index ["selected_group_id"], name: "index_sessions_on_selected_group_id"
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
@@ -114,6 +117,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_25_221159) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_subscribers_on_item_id"
+  end
+
+  create_table "user_group_selections", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_user_group_selections_on_group_id"
+    t.index ["user_id"], name: "index_user_group_selections_on_user_id", unique: true
   end
 
   create_table "user_groups", force: :cascade do |t|
@@ -144,8 +156,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_25_221159) do
   add_foreign_key "list_meals", "meals"
   add_foreign_key "lists", "groups"
   add_foreign_key "meals", "groups"
+  add_foreign_key "sessions", "groups", column: "selected_group_id"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscribers", "items"
+  add_foreign_key "user_group_selections", "groups"
+  add_foreign_key "user_group_selections", "users"
   add_foreign_key "user_groups", "groups"
   add_foreign_key "user_groups", "users"
 end

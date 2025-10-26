@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :user_groups, dependent: :destroy
   has_many :groups, through: :user_groups
+  has_one :user_group_selection, dependent: :destroy
 
   validates :first_name, presence: true
   validates :last_name, presence: true

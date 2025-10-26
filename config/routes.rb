@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :users, only: [:new, :create]
+  resources :users, only: [ :new, :create ]
   resources :groups
   resources :lists
   resource :session
@@ -37,5 +37,4 @@ Rails.application.routes.draw do
   # delete "/items/:id", to: "items#destroy"
 
   root "lists#index"
-  resources :lists
 end
