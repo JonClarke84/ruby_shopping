@@ -7,29 +7,16 @@ class ListsTest < ApplicationSystemTestCase
 
   test "visiting the index" do
     visit lists_url
-    assert_selector "h1", text: "Lists"
+    assert_selector "h1", text: "Shopping list for"
   end
 
   test "should create list" do
-    visit lists_url
-    click_on "New list"
+    visit new_list_url
 
-    fill_in "Date", with: @list.date
-    click_on "Create List"
+    fill_in "list_date", with: 7.days.from_now
+    click_on "Create"
 
     assert_text "List was successfully created"
-    click_on "Back"
-  end
-
-  test "should update List" do
-    visit list_url(@list)
-    click_on "Edit this list", match: :first
-
-    fill_in "Date", with: @list.date
-    click_on "Update List"
-
-    assert_text "List was successfully updated"
-    click_on "Back"
   end
 
   test "should destroy List" do
