@@ -1,1 +1,9 @@
-# Empty
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: Test Item
+  group_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+
+two:
+  name: Another Item
+  group_id: <%= ActiveRecord::FixtureSet.identify(:one) %>

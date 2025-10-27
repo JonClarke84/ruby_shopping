@@ -1,16 +1,28 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Current List for #{@list.date}" %>
 
-<% content_for :title, "Lists" %>
+<h1>Shopping list for <%= @list.date.strftime('%A %d %B') %></h1>
 
-<h1>Lists</h1>
-
-<div id="lists">
-  <% @lists.each do |list| %>
-    <%= render list %>
-    <p>
-      <%= link_to "Show this list", list %>
-    </p>
+<div id="list-meals">
+  <h2>Meals</h2>
+  <%= form_with(model: @list) do |form| %>
+    <%= 7.times do |n| %>
+      <% date = @list.date + n.days %>
+      <% meal = @list.meal_for_date(date) %>
+      <div>
+        <%= form.label date.strftime('%A'), style: "display: block" %>
+        <%= form.text_field :name, value: meal&.name %>
+      </div>
+    <% end %>
+    <div>
+      <%= form.submit "Update Meals" %>
+    </div>
   <% end %>
+</div>
+
+
+<div id="list-items">
+  <h2>Items</h2>
+  <%= render @list.items %>
 </div>
 
 <%= link_to "New list", new_list_path %>

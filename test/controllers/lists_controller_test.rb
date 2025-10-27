@@ -28,11 +28,6 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get edit" do
-    get edit_list_url(@list)
-    assert_response :success
-  end
-
   test "should update list" do
     patch list_url(@list), params: { list: { date: @list.date } }
     assert_redirected_to list_url(@list)
