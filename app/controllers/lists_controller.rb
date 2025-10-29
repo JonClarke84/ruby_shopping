@@ -9,7 +9,6 @@ class ListsController < ApplicationController
 
   # GET /lists/1 or /lists/1.json
   def show
-    @list = List.find(list_params[:id])
   end
 
   # GET /lists/new
@@ -56,7 +55,7 @@ class ListsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def list_params
-      params.expect(list: [ :date, :id ])
+      params.expect(list: [ :id ])
     end
 
     def default_group_id
