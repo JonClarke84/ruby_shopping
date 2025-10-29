@@ -4,15 +4,16 @@
 
 <div id="list-meals">
   <h2>Meals</h2>
-  <%= form_with(model: @list) do |form| %>
-    <%= 7.times do |n| %>
+  <%= form_with( url: list_meals_path(@list), method: :patch, local: true ) do |form| %>
+    <% 7.times do |n| %>
       <% date = @list.date + n.days %>
       <% meal = @list.meal_for_date(date) %>
       <div>
         <%= form.label date.strftime('%A'), style: "display: block" %>
-        <%= form.text_field :name, value: meal&.name %>
+        <%= form.text_field "meals[#{date}]", value: meal&.name %>
       </div>
     <% end %>
+    <%= form.hidden_field "group_id", value: @list.group_id %>
     <div>
       <%= form.submit "Update Meals" %>
     </div>

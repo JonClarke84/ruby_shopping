@@ -9,6 +9,7 @@ class ListsController < ApplicationController
 
   # GET /lists/1 or /lists/1.json
   def show
+    @list = List.find(list_params[:id])
   end
 
   # GET /lists/new
@@ -19,17 +20,9 @@ class ListsController < ApplicationController
   # POST /lists or /lists.json
   def create
     @list = List.new(list_params)
-    @list.group_id = Current.session&.selected_group_id || default_group_id
+    @list.group_id = Current.session&.selected_group_id || default_group_id()
 
-    respond_to do |format|
-      if @list.save
-        format.html { redirect_to @list, notice: "List was successfully created." }
-        format.json { render :show, status: :created, location: @list }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @list.errors, status: :unprocessable_entity }
-      end
-    end
+    redirect_to lists_path if @list.save
   end
 
   # PATCH/PUT /lists/1 or /lists/1.json
@@ -63,7 +56,7 @@ class ListsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def list_params
-      params.expect(list: [ :date ])
+      params.expect(list: [ :date, :id ])
     end
 
     def default_group_id
