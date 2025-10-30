@@ -5,6 +5,7 @@ class ListsController < ApplicationController
   # GET /lists or /lists.json
   def index
     @list = List.last
+    @item = Item.new
   end
 
   # GET /lists/1 or /lists/1.json
@@ -19,17 +20,9 @@ class ListsController < ApplicationController
   # POST /lists or /lists.json
   def create
     @list = List.new(list_params)
-    @list.group_id = Current.session&.selected_group_id || default_group_id
+    @list.group_id = Current.session&.selected_group_id || default_group_id()
 
-    respond_to do |format|
-      if @list.save
-        format.html { redirect_to @list, notice: "List was successfully created." }
-        format.json { render :show, status: :created, location: @list }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @list.errors, status: :unprocessable_entity }
-      end
-    end
+    redirect_to root_path if @list.save
   end
 
   # PATCH/PUT /lists/1 or /lists/1.json
