@@ -1,4 +1,6 @@
 class List < ApplicationRecord
+  belongs_to :group
+
   has_many :list_items
   has_many :items, through: :list_items
   has_many :list_meals

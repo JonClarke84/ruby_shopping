@@ -23,7 +23,24 @@
 
 <div id="list-items">
   <h2>Items</h2>
-  <%= render @list.items %>
+  <%= form_with model: [@list, @item] do |form| %>
+    <div>
+      <%= form.label "Item name", style: "display: block" %>
+      <%= form.text_field "name" %>
+      <%= form.label "Quantity", style: "display: block" %>
+      <%= form.number_field "quantity", min: 1, value: 1 %>
+      <%= form.hidden_field "group_id", value: @list.group_id %>
+    </div>
+    <div>
+      <%= form.submit "Add item" %>
+    </div>
+  <% end %>
 </div>
+
+<% if @list.items.any? %>
+  <% @list.list_items.each do |list_item| %>
+    <%= list_item.item.name %> - <%= list_item.quantity %>
+  <% end %>
+<% end %>
 
 <%= link_to "New list", new_list_path %>

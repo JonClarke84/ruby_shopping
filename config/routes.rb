@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   resources :lists do
     resources :meals, only: [ :create, :update, :destroy ]
     patch :meals, to: "meals#update"
+
+    resources :items, only: [ :index, :new, :create ]
   end
+
   resource :session
   resources :passwords, param: :token
 

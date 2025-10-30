@@ -5,6 +5,7 @@ class ListsController < ApplicationController
   # GET /lists or /lists.json
   def index
     @list = List.last
+    @item = Item.new
   end
 
   # GET /lists/1 or /lists/1.json
@@ -21,7 +22,7 @@ class ListsController < ApplicationController
     @list = List.new(list_params)
     @list.group_id = Current.session&.selected_group_id || default_group_id()
 
-    redirect_to lists_path if @list.save
+    redirect_to root_path if @list.save
   end
 
   # PATCH/PUT /lists/1 or /lists/1.json
@@ -55,7 +56,7 @@ class ListsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def list_params
-      params.expect(list: [ :id ])
+      params.expect(list: [ :date ])
     end
 
     def default_group_id

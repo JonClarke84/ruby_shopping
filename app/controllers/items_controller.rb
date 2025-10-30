@@ -1,6 +1,5 @@
 class ItemsController < ApplicationController
-  allow_unauthenticated_access only: %i[index show]
-  before_action :set_item, only: %i[show edit update destroy]
+  before_action :set_list
 
   def index
     @items = Item.all
@@ -14,9 +13,10 @@ class ItemsController < ApplicationController
   end
 
   def create
-    @item = Item.new(item_params)
+    @item = Item.new(name: item_params[:name], group_id: item_params[:group_id])
     if @item.save
-      redirect_to @item
+      @list.list_items.create(item: @item, quantity: item_params[:quantity])
+      redirect_to root_path
     else
       render :new, status: :unprocessable_entity
     end
@@ -26,10 +26,8 @@ class ItemsController < ApplicationController
   end
 
   def update
-    if @item.update(item_params)
-      redirect_to @item
-    else
-      render :edit, status: :unprocessable_entity
+    params[:items].each do |item_str, quantity|
+      puts item_str
     end
   end
 
@@ -39,11 +37,12 @@ class ItemsController < ApplicationController
   end
 
   private
-    def set_item
-      @item = Item.find(params[:id])
-    end
 
-    def item_params
-      params.expect(item: [ :name, :quantity, :description, :featured_image ])
-    end
+  def set_list
+    @list = List.find(params[:list_id])
+  end
+
+  def item_params
+    params.expect(item: [ :name, :quantity, :group_id ])
+  end
 end
