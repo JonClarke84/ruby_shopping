@@ -25,11 +25,24 @@
   <body>
     <div class="notice"><%= notice %></div>
     <nav>
-      <%= link_to "Home", root_path %>
-      <%= link_to "Login", new_session_path unless authenticated? %>
-      <%= button_to "Logout", session_path, method: :delete if authenticated? %> 
+      <div>
+        <%= link_to "Home", root_path %>
+        <%= link_to "New list", new_list_path %>
+      </div>
+      <div>
+        <details>
+          <summary><%= Current.session&.selected_group&.name %></summary>
+          <ul class="dropdown-menu">
+            <li><%= link_to "Lists", lists_path %></li>
+            <li><%= link_to "Manage groups", groups_path %></li>
+            <li><%= link_to "Items", items_path %></li>
+            <li><%= button_to "Logout", session_path, method: :delete if authenticated? %></li>
+          </ul>
+        </details>
+      </div>
     </nav>
     <main>
+      <%= link_to "Login", new_session_path unless authenticated? %>
       <%= yield %>
     </main>
   </body>

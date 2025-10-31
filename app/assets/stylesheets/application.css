@@ -1,25 +1,42 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
-  padding: 1rem;
+  margin: 0;
 }
 
 nav {
-  justify-content: flex-end;
   display: flex;
+  justify-content: space-between;
   font-size: 0.875em;
   gap: 0.5rem;
   max-width: 1024px;
   margin: 0 auto;
   padding: 1rem;
+  background: lightblue;
 }
 
-nav a {
-  display: inline-block;
+nav {
+  & a {
+    display: inline-block;
+  }
+
+  & .dropdown-menu {
+    position: absolute;
+    background: lightblue;
+    border: 1px solid darkblue;
+    list-style: none;
+    padding: 0.5rem;
+
+    & li {
+      margin: 0.5rem 0;
+      min-height: 44px;
+    }
+  }
 }
 
 main {
   max-width: 1024px;
   margin: 0 auto;
+  padding: 1rem;
 }
 
 .notice {
