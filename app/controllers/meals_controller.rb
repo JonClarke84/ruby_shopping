@@ -27,6 +27,6 @@ class MealsController < ApplicationController
   private
 
   def set_list
-    @list = List.find(params[:list_id])
+    @list = Current.session.selected_group.lists.find(params[:list_id])
   end
 end

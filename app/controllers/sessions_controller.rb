@@ -18,4 +18,20 @@ class SessionsController < ApplicationController
     terminate_session
     redirect_to new_session_path
   end
+
+  def switch_group
+    group = Current.user.groups.find(params[:group_id])
+
+    # Update user's saved preference
+    if Current.user.user_group_selection
+      Current.user.user_group_selection.update(group: group)
+    else
+      Current.user.create_user_group_selection(group: group)
+    end
+
+    # Update current session
+    Current.session.update(selected_group: group)
+
+    redirect_to root_path, notice: "Switched to #{group.name}"
+  end
 end

@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   resources :users, only: [ :new, :create ]
-  resources :groups
+  resources :groups do
+    member do
+      get :invite
+      post :invite, action: :send_invite
+    end
+  end
   resources :lists do
     resources :meals, only: [ :create, :update, :destroy ]
     patch :meals, to: "meals#update"
@@ -9,6 +14,7 @@ Rails.application.routes.draw do
   end
 
   resource :session
+  patch '/switch_group', to: 'sessions#switch_group', as: :switch_group
   resources :passwords, param: :token
 
   resources :items do

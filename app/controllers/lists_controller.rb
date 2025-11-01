@@ -4,7 +4,7 @@ class ListsController < ApplicationController
 
   # GET /lists or /lists.json
   def index
-    @list = List.last
+    @list = Current.session.selected_group.lists.last
     @item = Item.new
   end
 
@@ -51,7 +51,7 @@ class ListsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_list
-      @list = List.find(params.expect(:id))
+      @list = Current.session.selected_group.lists.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.

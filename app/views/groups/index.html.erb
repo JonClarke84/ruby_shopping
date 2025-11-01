@@ -1,0 +1,26 @@
+<h1>Manage Groups</h1>
+
+<%= link_to 'Create New Group', new_group_path %>
+
+<h2>Your Groups</h2>
+<% if @groups.any? %>
+  <%= form_with url: switch_group_path, method: :patch do |f| %>
+    <div class="groups-cards">
+      <% @groups.each do |group| %>
+        <div class="group-card">
+          <div class="group-radio">
+            <%= f.radio_button :group_id, group.id, checked: group == Current.session.selected_group %>
+            <%= f.label "group_id_#{group.id}", group.name %>
+          </div>
+          <div class="group-actions">
+            <%= link_to 'Edit', edit_group_path(group) %>
+            <%= link_to 'Invite to group', invite_group_path(group) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <%= f.submit 'Switch to selected group' %>
+  <% end %>
+<% else %>
+  <p>You are not a member of any groups yet.</p>
+<% end %>
