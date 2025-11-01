@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   end
 
   resource :session
-  patch '/switch_group', to: 'sessions#switch_group', as: :switch_group
+  patch "/switch_group", to: "sessions#switch_group", as: :switch_group
   resources :passwords, param: :token
 
   resources :items do
