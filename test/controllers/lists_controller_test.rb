@@ -20,7 +20,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
       post lists_url, params: { list: { date: @list.date } }
     end
 
-    assert_redirected_to list_url(List.last)
+    assert_redirected_to root_url
   end
 
   test "should show list" do

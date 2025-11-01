@@ -1,18 +1,16 @@
 require "test_helper"
 
 class MealsControllerTest < ActionDispatch::IntegrationTest
-  test "should get create" do
-    get meals_create_url
-    assert_response :success
+  setup do
+    @list = lists(:one)
+    @meal = meals(:one)
   end
 
-  test "should get update" do
-    get meals_update_url
-    assert_response :success
-  end
+  test "should update meals" do
+    assert_difference("ListMeal.count") do
+      patch list_meals_url(@list), params: { meals: { "2025-10-27" => "Spaghetti" } }
+    end
 
-  test "should get destroy" do
-    get meals_destroy_url
-    assert_response :success
+    assert_redirected_to @list
   end
 end
