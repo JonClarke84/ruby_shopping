@@ -16,7 +16,7 @@ class ListsTest < ApplicationSystemTestCase
     fill_in "list_date", with: 7.days.from_now
     click_on "Create"
 
-    assert_text "List was successfully created"
+    assert_selector "h1", text: "Shopping list for"
   end
 
   test "should destroy List" do

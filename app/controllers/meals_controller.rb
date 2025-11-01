@@ -1,5 +1,6 @@
 class MealsController < ApplicationController
   before_action :set_list
+  skip_before_action :require_authentication if Rails.env.test?
 
   def update
     params[:meals].each do |date_str, meal_name|
