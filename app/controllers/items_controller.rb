@@ -3,6 +3,7 @@ class ItemsController < ApplicationController
 
   def index
     @items = current_group.items
+    @group = current_group
   end
 
   def show
@@ -39,7 +40,7 @@ class ItemsController < ApplicationController
   private
 
   def set_list
-    @list = current_group.lists.find(params[:list_id])
+    @list = current_group.lists.find(params[:list_id]) if current_group.lists.present?
   end
 
   def item_params
