@@ -1,5 +1,6 @@
 class ListsController < ApplicationController
   before_action :set_list, only: %i[ show update destroy ]
+  before_action :authorize_list, only: %i[ show update destroy ]
   skip_before_action :require_authentication if Rails.env.test?
 
   # GET /lists or /lists.json
@@ -51,7 +52,13 @@ class ListsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_list
-      @list = current_group.lists.find(params.expect(:id))
+      @list = List.find(params.expect(:id))
+    end
+
+    def authorize_list
+      unless @list && @list.group_id == current_group.id
+        redirect_to root_path, alert: "You don't have access to that list"
+      end
     end
 
     # Only allow a list of trusted parameters through.
