@@ -1,0 +1,14 @@
+<h1>Invite to <%= @group.name %></h1>
+
+<%= form_with url: invite_group_path(@group), method: :post do |form| %>
+  <div>
+    <%= form.label :email, "Email address" %>
+    <%= form.email_field :email, required: true, placeholder: "user@example.com" %>
+  </div>
+
+  <div>
+    <%= form.submit "Send Invitation" %>
+  </div>
+<% end %>
+
+<%= link_to "Back to groups", groups_path %>

@@ -11,5 +11,10 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
+
+    # Set Current.session for tests (Current.user is delegated from session)
+    setup do
+      Current.session = sessions(:one)
+    end
   end
 end

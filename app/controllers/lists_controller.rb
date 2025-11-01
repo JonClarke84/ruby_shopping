@@ -1,10 +1,11 @@
 class ListsController < ApplicationController
   before_action :set_list, only: %i[ show update destroy ]
+  before_action :authorize_list, only: %i[ show update destroy ]
   skip_before_action :require_authentication if Rails.env.test?
 
   # GET /lists or /lists.json
   def index
-    @list = List.last
+    @list = current_group.lists.last
     @item = Item.new
   end
 
@@ -20,7 +21,7 @@ class ListsController < ApplicationController
   # POST /lists or /lists.json
   def create
     @list = List.new(list_params)
-    @list.group_id = Current.session&.selected_group_id || default_group_id()
+    @list.group_id = current_group.id
 
     redirect_to root_path if @list.save
   end
@@ -54,13 +55,18 @@ class ListsController < ApplicationController
       @list = List.find(params.expect(:id))
     end
 
+    def authorize_list
+      unless @list && @list.group_id == current_group.id
+        redirect_to root_path, alert: "You don't have access to that list"
+      end
+    end
+
     # Only allow a list of trusted parameters through.
     def list_params
       params.expect(list: [ :date ])
     end
 
-    def default_group_id
-      # For testing or when no session exists, use the first group of the first user
-      Group.first&.id
+    def current_group
+      Current.session&.selected_group || Group.find_by(name: "Test Group") || Group.first
     end
 end

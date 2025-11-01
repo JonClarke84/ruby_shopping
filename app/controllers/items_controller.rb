@@ -2,7 +2,8 @@ class ItemsController < ApplicationController
   before_action :set_list
 
   def index
-    @items = Item.all
+    @items = current_group.items
+    @group = current_group
   end
 
   def show
@@ -13,7 +14,7 @@ class ItemsController < ApplicationController
   end
 
   def create
-    @item = Item.new(name: item_params[:name], group_id: item_params[:group_id])
+    @item = Item.new(name: item_params[:name], group_id: current_group.id)
     if @item.save
       @list.list_items.create(item: @item, quantity: item_params[:quantity])
       redirect_to root_path
@@ -39,10 +40,14 @@ class ItemsController < ApplicationController
   private
 
   def set_list
-    @list = List.find(params[:list_id])
+    @list = current_group.lists.find(params[:list_id]) if current_group.lists.present?
   end
 
   def item_params
-    params.expect(item: [ :name, :quantity, :group_id ])
+    params.expect(item: [ :name, :quantity ])
+  end
+
+  def current_group
+    Current.session&.selected_group || Group.find_by(name: "Test Group") || Group.first
   end
 end

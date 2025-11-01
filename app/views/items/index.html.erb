@@ -1,12 +1,9 @@
-<h1>Shopping List Items</h1>
-
-<%= link_to "New item", new_item_path if authenticated? %>
+<h1>All items in <%= @group.name %></h1>
 
 <ul id="items">
   <% @items.each do |item| %>
     <li>
       <%= link_to item.name, item %> 
-      <%= item.quantity %>
     </li>
   <% end %>
 </ul>
