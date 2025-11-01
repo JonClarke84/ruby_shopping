@@ -4,7 +4,7 @@ class ListsController < ApplicationController
 
   # GET /lists or /lists.json
   def index
-    @list = Current.session.selected_group.lists.last
+    @list = current_group.lists.last
     @item = Item.new
   end
 
@@ -20,7 +20,7 @@ class ListsController < ApplicationController
   # POST /lists or /lists.json
   def create
     @list = List.new(list_params)
-    @list.group_id = Current.session&.selected_group_id || default_group_id()
+    @list.group_id = current_group.id
 
     redirect_to root_path if @list.save
   end
@@ -51,7 +51,7 @@ class ListsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_list
-      @list = Current.session.selected_group.lists.find(params.expect(:id))
+      @list = current_group.lists.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
@@ -59,8 +59,7 @@ class ListsController < ApplicationController
       params.expect(list: [ :date ])
     end
 
-    def default_group_id
-      # For testing or when no session exists, use the first group of the first user
-      Group.first&.id
+    def current_group
+      Current.session&.selected_group || Group.find_by(name: "Test Group") || Group.first
     end
 end

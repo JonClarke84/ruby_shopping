@@ -8,7 +8,7 @@ class MealsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update meals" do
     assert_difference("ListMeal.count") do
-      patch list_meals_url(@list), params: { meals: { "2025-10-27" => "Spaghetti" } }
+      patch list_meals_url(@list), params: { meals: { "2025-10-27" => "Test Meal" } }
     end
 
     assert_redirected_to @list

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  selected_group: one
+  ip_address: "127.0.0.1"
+  user_agent: "Test Browser"
+
+two:
+  user: two
+  selected_group: two
+  ip_address: "127.0.0.1"
+  user_agent: "Test Browser"
