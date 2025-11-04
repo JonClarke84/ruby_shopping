@@ -1,25 +1,27 @@
-<h1>Create a New Group</h1>
+<div class="max-w-md">
+  <h1>Create a New Group</h1>
 
-<%= form_with model: @group do |form| %>
-  <% if @group.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
-      <ul>
-        <% @group.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <%= form_with model: @group do |form| %>
+    <% if @group.errors.any? %>
+      <div class="alert-error mb-6">
+        <h3><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h3>
+        <ul>
+          <% @group.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= form.label :name, "Group name", class: "label" %>
+      <%= form.text_field :name, required: true, class: "input", placeholder: "e.g. Family, Roommates" %>
+    </div>
+
+    <div class="mb-6">
+      <%= form.submit "Create Group", class: "btn btn-primary w-full" %>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, "Group name" %>
-    <%= form.text_field :name, required: true %>
-  </div>
-
-  <div>
-    <%= form.submit "Create Group" %>
-  </div>
-<% end %>
-
-<%= link_to "Back to groups", groups_path %>
+  <%= link_to "Back to groups", groups_path %>
+</div>

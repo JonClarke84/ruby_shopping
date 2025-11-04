@@ -17,21 +17,24 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%# Tailwind CSS %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <div class="notice"><%= notice %></div>
-    <nav>
-      <div>
+    <% if notice.present? %>
+      <div class="notice"><%= notice %></div>
+    <% end %>
+
+    <nav class="nav">
+      <div class="flex gap-4">
         <%= link_to "Home", root_path %>
         <%= link_to "New list", new_list_path %>
       </div>
       <div>
         <details>
-          <summary><%= Current.session&.selected_group&.name || "Menu" %></summary>
+          <summary><%= Current.session&.selected_group&.name || "Menu" %> ▼</summary>
           <ul class="dropdown-menu">
             <li><%= link_to "Lists", lists_path %></li>
             <li><%= link_to "Manage groups", groups_path %></li>
@@ -39,7 +42,12 @@
             <% if authenticated? %>
               <% invitation_count = Current.user.pending_invitations_count %>
               <li>
-                <%= link_to "Invitations #{invitation_count > 0 ? "(#{invitation_count})" : ''}", group_invitations_path %>
+                <%= link_to group_invitations_path do %>
+                  Invitations
+                  <% if invitation_count > 0 %>
+                    <span class="badge"><%= invitation_count %></span>
+                  <% end %>
+                <% end %>
               </li>
             <% end %>
             <li><%= button_to "Logout", session_path, method: :delete if authenticated? %></li>
@@ -47,8 +55,9 @@
         </details>
       </div>
     </nav>
-    <main>
-      <%= link_to "Login", new_session_path unless authenticated? %>
+
+    <main class="container-main">
+      <%= link_to "Login", new_session_path, class: "btn btn-primary" unless authenticated? %>
       <%= yield %>
     </main>
   </body>

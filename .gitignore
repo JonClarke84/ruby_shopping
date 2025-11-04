@@ -34,3 +34,6 @@ ror-key.txt.pub
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

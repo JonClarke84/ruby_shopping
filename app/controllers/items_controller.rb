@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :set_list
+  before_action :set_list, only: [:create]
 
   def index
     @items = current_group.items

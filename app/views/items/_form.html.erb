@@ -1,5 +1,7 @@
 <%= form_with model: item do |form| %>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-    <%= form.submit %>
+  <div class="form-group">
+    <%= form.label :name, "Item name", class: "label" %>
+    <%= form.text_field :name, class: "input" %>
+  </div>
+  <%= form.submit class: "btn btn-primary" %>
 <% end %>
