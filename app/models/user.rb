@@ -19,6 +19,6 @@ class User < ApplicationRecord
 
   def create_default_group
     default_group = Group.create!(name: "#{first_name} #{last_name}")
-    user_groups.create!(group: default_group)
+    user_groups.create!(group: default_group, is_default: true)
   end
 end

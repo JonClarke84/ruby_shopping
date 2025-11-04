@@ -113,9 +113,9 @@ class GroupsControllerTest < ActionDispatch::IntegrationTest
     user = users(:one)
     Current.session = sessions(:one)
 
-    # Create a group that matches the user's name (default group)
-    default_group = Group.create!(name: "#{user.first_name} #{user.last_name}")
-    default_group.user_groups.create!(user: user)
+    # Create a default group (marked with is_default: true)
+    default_group = Group.create!(name: "User One Default")
+    default_group.user_groups.create!(user: user, is_default: true)
 
     assert_no_difference "UserGroup.count" do
       delete leave_group_url(default_group)
@@ -158,7 +158,7 @@ class GroupsControllerTest < ActionDispatch::IntegrationTest
       delete leave_group_url(other_group)
     end
 
-    assert_redirected_to groups_url
-    assert_equal "You are not a member of this group", flash[:alert]
+    # Now returns 404 because current_user.groups.find raises RecordNotFound
+    assert_response :not_found
   end
 end

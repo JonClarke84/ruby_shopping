@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_04_215528) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_04_224655) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -146,9 +146,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_04_215528) do
   create_table "user_groups", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "group_id", null: false
+    t.boolean "is_default", default: false, null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["group_id"], name: "index_user_groups_on_group_id"
+    t.index ["user_id", "is_default"], name: "index_user_groups_on_user_id_and_is_default_true", unique: true, where: "is_default = true"
     t.index ["user_id"], name: "index_user_groups_on_user_id"
   end
 

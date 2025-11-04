@@ -85,35 +85,33 @@ class GroupsController < ApplicationController
   end
 
   def leave
-    # Find the group (any group, not just user's groups)
-    @group = Group.find(params.expect(:id))
+    # Find the group through user's groups (proper authorization)
+    @group = current_user.groups.find(params.expect(:id))
 
     # Find the user_group relationship
-    user_group = current_user.user_groups.find_by(group: @group)
-    unless user_group
-      redirect_to groups_url, alert: "You are not a member of this group"
-      return
-    end
+    user_group = current_user.user_groups.find_by!(group: @group)
 
-    # Check if this is the user's default group (matches their name)
-    user_default_group_name = "#{current_user.first_name} #{current_user.last_name}"
-    if @group.name == user_default_group_name
+    # Check if this is the user's default group using is_default flag
+    if user_group.is_default
       redirect_to groups_url, alert: "You cannot leave your default group"
       return
     end
 
-    # If leaving the currently selected group, switch to another group before removing membership
-    # Get all sessions for this user that have this group selected
-    sessions_to_update = current_user.sessions.where(selected_group: @group)
-    if sessions_to_update.any?
-      # Find another group before we remove membership
-      other_group_ids = current_user.groups.where.not(id: @group.id).pluck(:id)
-      new_group = Group.find_by(id: other_group_ids.first) if other_group_ids.any?
-      sessions_to_update.update_all(selected_group_id: new_group&.id)
-    end
+    # Wrap session updates and membership deletion in a transaction
+    ActiveRecord::Base.transaction do
+      # If leaving the currently selected group, switch to another group before removing membership
+      # Get all sessions for this user that have this group selected
+      sessions_to_update = current_user.sessions.where(selected_group: @group)
+      if sessions_to_update.any?
+        # Find another group before we remove membership
+        other_group_ids = current_user.groups.where.not(id: @group.id).pluck(:id)
+        new_group = Group.find_by(id: other_group_ids.first) if other_group_ids.any?
+        sessions_to_update.update_all(selected_group_id: new_group&.id)
+      end
 
-    # Remove user from group
-    user_group.destroy!
+      # Remove user from group
+      user_group.destroy!
+    end
 
     redirect_to groups_url, notice: "You have left #{@group.name}"
   end
