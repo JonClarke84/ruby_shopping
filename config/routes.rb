@@ -4,6 +4,14 @@ Rails.application.routes.draw do
     member do
       get :invite
       post :invite, action: :send_invite
+      delete :leave
+    end
+  end
+
+  resources :group_invitations, only: [ :index ] do
+    member do
+      post :accept
+      post :decline
     end
   end
   resources :lists do

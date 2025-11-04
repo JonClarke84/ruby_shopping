@@ -46,9 +46,74 @@ class GroupsController < ApplicationController
 
   def send_invite
     email = params[:email]
-    # TODO: Implement mailer integration
-    # For now, just redirect with a notice
-    redirect_to groups_url, notice: "Invitation will be sent to #{email} (mailer not yet implemented)"
+    invitee = User.find_by(email_address: email)
+
+    # Validate user exists
+    unless invitee
+      flash.now[:alert] = "Unable to send invitation. Please check the email address."
+      render :invite, status: :unprocessable_entity
+      return
+    end
+
+    # Validate not inviting self
+    if invitee == current_user
+      flash.now[:alert] = "You cannot invite yourself to a group"
+      render :invite, status: :unprocessable_entity
+      return
+    end
+
+    # Validate not already a member
+    if @group.users.include?(invitee)
+      flash.now[:alert] = "#{invitee.first_name} #{invitee.last_name} is already a member of this group"
+      render :invite, status: :unprocessable_entity
+      return
+    end
+
+    # Create invitation
+    invitation = @group.group_invitations.new(
+      user: invitee,
+      invited_by: current_user,
+      status: :pending
+    )
+
+    if invitation.save
+      redirect_to groups_url, notice: "Invitation sent to #{invitee.first_name} #{invitee.last_name}"
+    else
+      flash.now[:alert] = invitation.errors.full_messages.first
+      render :invite, status: :unprocessable_entity
+    end
+  end
+
+  def leave
+    # Find the group through user's groups (proper authorization)
+    @group = current_user.groups.find(params.expect(:id))
+
+    # Find the user_group relationship
+    user_group = current_user.user_groups.find_by!(group: @group)
+
+    # Check if this is the user's default group using is_default flag
+    if user_group.is_default
+      redirect_to groups_url, alert: "You cannot leave your default group"
+      return
+    end
+
+    # Wrap session updates and membership deletion in a transaction
+    ActiveRecord::Base.transaction do
+      # If leaving the currently selected group, switch to another group before removing membership
+      # Get all sessions for this user that have this group selected
+      sessions_to_update = current_user.sessions.where(selected_group: @group)
+      if sessions_to_update.any?
+        # Find another group before we remove membership
+        other_group_ids = current_user.groups.where.not(id: @group.id).pluck(:id)
+        new_group = Group.find_by(id: other_group_ids.first) if other_group_ids.any?
+        sessions_to_update.update_all(selected_group_id: new_group&.id)
+      end
+
+      # Remove user from group
+      user_group.destroy!
+    end
+
+    redirect_to groups_url, notice: "You have left #{@group.name}"
   end
 
   private
@@ -59,9 +124,5 @@ class GroupsController < ApplicationController
 
   def group_params
     params.expect(group: [ :name ])
-  end
-
-  def current_user
-    Current.user || User.find_by(email_address: "one@example.com") || User.first
   end
 end

@@ -15,6 +15,10 @@
           <div class="group-actions">
             <%= link_to 'Edit', edit_group_path(group) %>
             <%= link_to 'Invite to group', invite_group_path(group) %>
+            <% user_group = Current.user.user_groups.find_by(group: group) %>
+            <% unless user_group&.is_default %>
+              <%= button_to 'Leave', leave_group_path(group), method: :delete, data: { turbo_confirm: "Are you sure you want to leave #{group.name}?" } %>
+            <% end %>
           </div>
         </div>
       <% end %>

@@ -1,0 +1,4 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# No default invitations in fixtures to avoid conflicts with tests
+# Tests will create their own invitations as needed

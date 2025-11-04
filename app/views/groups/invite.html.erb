@@ -1,5 +1,8 @@
 <h1>Invite to <%= @group.name %></h1>
 
+<%= tag.div(flash[:alert], class: "alert") if flash[:alert] %>
+<%= tag.div(flash[:notice], class: "notice") if flash[:notice] %>
+
 <%= form_with url: invite_group_path(@group), method: :post do |form| %>
   <div>
     <%= form.label :email, "Email address" %>
