@@ -4,6 +4,8 @@ class User < ApplicationRecord
   has_many :user_groups, dependent: :destroy
   has_many :groups, through: :user_groups
   has_one :user_group_selection, dependent: :destroy
+  has_many :group_invitations, dependent: :destroy
+  has_many :sent_invitations, class_name: "GroupInvitation", foreign_key: :invited_by_id, dependent: :destroy
 
   validates :first_name, presence: true
   validates :last_name, presence: true

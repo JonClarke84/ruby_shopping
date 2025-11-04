@@ -4,4 +4,5 @@ class Group < ApplicationRecord
   has_many :lists
   has_many :items
   has_many :meals
+  has_many :group_invitations, dependent: :destroy
 end
