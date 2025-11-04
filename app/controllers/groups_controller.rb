@@ -50,7 +50,7 @@ class GroupsController < ApplicationController
 
     # Validate user exists
     unless invitee
-      flash.now[:alert] = "User not found with email: #{email}"
+      flash.now[:alert] = "Unable to send invitation. Please check the email address."
       render :invite, status: :unprocessable_entity
       return
     end
@@ -124,9 +124,5 @@ class GroupsController < ApplicationController
 
   def group_params
     params.expect(group: [ :name ])
-  end
-
-  def current_user
-    Current.user || User.find_by(email_address: "one@example.com") || User.first
   end
 end

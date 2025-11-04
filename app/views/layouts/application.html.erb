@@ -37,7 +37,7 @@
             <li><%= link_to "Manage groups", groups_path %></li>
             <li><%= link_to "Items", items_path %></li>
             <% if authenticated? %>
-              <% invitation_count = Current.user.group_invitations.pending_and_not_expired.count %>
+              <% invitation_count = Current.user.pending_invitations_count %>
               <li>
                 <%= link_to "Invitations #{invitation_count > 0 ? "(#{invitation_count})" : ''}", group_invitations_path %>
               </li>

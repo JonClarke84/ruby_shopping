@@ -43,6 +43,10 @@ main {
   color: green;
 }
 
+.alert {
+  color: red;
+}
+
 section.item {
   display: flex;
   gap: 1rem;

@@ -23,8 +23,4 @@ class GroupInvitationsController < ApplicationController
   def set_invitation
     @invitation = current_user.group_invitations.find(params.expect(:id))
   end
-
-  def current_user
-    Current.user || User.find_by(email_address: "one@example.com") || User.first
-  end
 end

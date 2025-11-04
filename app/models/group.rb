@@ -5,4 +5,5 @@ class Group < ApplicationRecord
   has_many :items
   has_many :meals
   has_many :group_invitations, dependent: :destroy
+  has_many :sessions, foreign_key: :selected_group_id, dependent: :nullify
 end

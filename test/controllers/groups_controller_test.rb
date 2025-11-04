@@ -44,7 +44,7 @@ class GroupsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unprocessable_entity
-    assert_match /User not found/, response.body
+    assert_match /Unable to send invitation/, response.body
   end
 
   test "should not allow user to invite themselves" do

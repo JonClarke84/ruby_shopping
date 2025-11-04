@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_04_224655) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_04_230410) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -61,6 +61,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_04_224655) do
     t.index ["invited_by_id"], name: "index_group_invitations_on_invited_by_id"
     t.index ["status"], name: "index_group_invitations_on_status"
     t.index ["user_id", "group_id", "status"], name: "index_group_invitations_on_user_id_and_group_id_and_status"
+    t.index ["user_id", "group_id"], name: "index_group_invitations_on_user_and_group_pending", unique: true, where: "status = 0"
     t.index ["user_id"], name: "index_group_invitations_on_user_id"
   end
 
@@ -150,6 +151,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_04_224655) do
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["group_id"], name: "index_user_groups_on_group_id"
+    t.index ["user_id", "group_id"], name: "index_user_groups_on_user_id_and_group_id", unique: true
     t.index ["user_id", "is_default"], name: "index_user_groups_on_user_id_and_is_default_true", unique: true, where: "is_default = true"
     t.index ["user_id"], name: "index_user_groups_on_user_id"
   end
@@ -160,6 +162,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_04_224655) do
     t.string "first_name"
     t.string "last_name"
     t.string "password_digest", null: false
+    t.integer "pending_invitations_count", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
