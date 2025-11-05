@@ -15,12 +15,6 @@ export default class extends Controller {
       delayOnTouchOnly: true,
       touchStartThreshold: 3,
 
-      // Force fallback mode for consistent mobile positioning
-      forceFallback: true,
-      fallbackClass: 'sortable-fallback',
-      fallbackOnBody: true,
-      fallbackTolerance: 3,
-
       // Element configuration
       handle: '.list-item-card',
       draggable: '.list-item-card',
