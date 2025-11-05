@@ -750,9 +750,12 @@ form[data-turbo-confirm] button:hover {
 }
 
 /* Sortable.js Drag and Drop */
+.list-items-grid {
+  min-height: 100px;
+}
+
 .list-item-card {
   cursor: move;
-  touch-action: none;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -760,6 +763,7 @@ form[data-turbo-confirm] button:hover {
 .sortable-ghost {
   opacity: 0.4;
   background: var(--color-primary-light);
+  touch-action: none;
 }
 
 .sortable-chosen {
@@ -778,9 +782,4 @@ form[data-turbo-confirm] button:hover {
   transition: none !important;
   z-index: 9999;
   touch-action: none;
-}
-
-.list-items-grid {
-  min-height: 100px;
-  touch-action: pan-y;
 }
