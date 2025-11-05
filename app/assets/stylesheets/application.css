@@ -756,6 +756,11 @@ form[data-turbo-confirm] button:hover {
   user-select: none;
 }
 
+/* Enable touch-action blocking when actively dragging */
+.list-items-grid[data-dragging="true"] .list-item-card {
+  touch-action: none;
+}
+
 .sortable-ghost {
   opacity: 0.4;
   background: var(--color-primary-light);
