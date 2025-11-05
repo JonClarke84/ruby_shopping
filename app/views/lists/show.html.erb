@@ -28,7 +28,7 @@
   </div>
   <% if @list.items.any? %>
     <ul>
-      <% @list.list_items.includes(:item).order(:sort_order).each do |list_item| %>
+      <% @list.list_items.includes(:item).joins(:item).order('items.sort_order').each do |list_item| %>
         <li><%= list_item.item.name %> (<%= list_item.quantity %>)</li>
       <% end %>
     </ul>

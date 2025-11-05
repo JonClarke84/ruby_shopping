@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_05_141212) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_05_213640) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -75,6 +75,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_05_141212) do
     t.datetime "created_at", null: false
     t.integer "group_id", null: false
     t.string "name"
+    t.decimal "sort_order", precision: 15, scale: 5
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_items_on_group_id"
   end
@@ -84,7 +85,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_05_141212) do
     t.integer "item_id", null: false
     t.integer "list_id", null: false
     t.integer "quantity"
-    t.decimal "sort_order"
     t.boolean "ticked", default: false, null: false
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_list_items_on_item_id"

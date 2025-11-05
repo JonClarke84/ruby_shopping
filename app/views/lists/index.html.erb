@@ -47,7 +47,7 @@
 
     <% if @list.items.any? %>
       <div id="list-items" class="list-items-grid" style="margin-top: 1.5rem;" data-controller="list-items">
-        <% @list.list_items.order(:sort_order).each do |list_item| %>
+        <% @list.list_items.includes(:item).joins(:item).order('items.sort_order').each do |list_item| %>
           <%= render partial: "list_items/list_item", locals: { list_item: list_item } %>
         <% end %>
       </div>

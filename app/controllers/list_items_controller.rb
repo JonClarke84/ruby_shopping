@@ -19,20 +19,30 @@ class ListItemsController < ApplicationController
 
   def destroy
     @list_item.destroy
-    redirect_to root_path, notice: "Item removed from list"
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to root_path, notice: "Item removed from list" }
+    end
   end
 
   def reorder
-    previous_id = params[:previous_id]
-    next_id = params[:next_id]
+    previous_list_item_id = params[:previous_id]
+    next_list_item_id = params[:next_id]
 
-    previous_item = previous_id.present? ? @list.list_items.find(previous_id) : nil
-    next_item = next_id.present? ? @list.list_items.find(next_id) : nil
+    # Get the actual Item objects from the list_items
+    previous_item = if previous_list_item_id.present?
+      @list.list_items.find(previous_list_item_id).item
+    end
 
-    new_sort_order = ListItem.calculate_new_sort_order(previous_item, next_item)
-    @list_item.update(sort_order: new_sort_order)
+    next_item = if next_list_item_id.present?
+      @list.list_items.find(next_list_item_id).item
+    end
 
-    render json: { success: true, sort_order: @list_item.sort_order }
+    # Calculate new sort_order for the item
+    new_sort_order = Item.calculate_new_sort_order(previous_item, next_item)
+    @list_item.item.update(sort_order: new_sort_order)
+
+    render json: { success: true, sort_order: @list_item.item.sort_order }
   end
 
   private

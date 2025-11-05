@@ -1,4 +1,5 @@
-<div class="list-item-card <%= 'list-item-ticked' if list_item.ticked %>"
+<div id="<%= dom_id(list_item) %>"
+     class="list-item-card <%= 'list-item-ticked' if list_item.ticked %>"
      data-list-item-id="<%= list_item.id %>"
      data-list-id="<%= list_item.list_id %>"
      data-list-items-target="item"
