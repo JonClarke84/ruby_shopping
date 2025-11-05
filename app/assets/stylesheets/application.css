@@ -1,4 +1,4 @@
-/* Retro Pixel-Art Design System */
+/* Retro Pixel-Art Design System - Base Styles */
 
 /* Import DM Mono font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
@@ -104,6 +104,7 @@ main {
   padding: var(--space-xl) var(--space-md);
   min-height: calc(100vh - 120px);
 }
+/* Retro Pixel-Art Design System - Component Styles */
 
 /* Navigation */
 nav {
@@ -612,6 +613,7 @@ form[data-turbo-confirm] button:hover {
   background: var(--color-bg-medium);
   color: var(--color-text);
 }
+/* Retro Pixel-Art Design System - Utility Classes */
 
 /* Utility Classes */
 .text-center {
@@ -745,21 +747,4 @@ form[data-turbo-confirm] button:hover {
 
 .glow {
   animation: glow 2s ease-in-out infinite;
-}
-
-/* Print Styles */
-@media print {
-  body {
-    background: white;
-    color: black;
-  }
-
-  nav {
-    display: none;
-  }
-
-  .card {
-    border: 1px solid black;
-    box-shadow: none;
-  }
 }

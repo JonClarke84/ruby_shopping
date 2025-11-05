@@ -4,8 +4,6 @@ export default class extends Controller {
   static targets = ["display", "form", "input", "editButton"]
 
   connect() {
-    this.listId = this.element.closest('[data-controller="list-items"]').dataset.listId ||
-                  window.location.pathname.split('/')[2] // Fallback to get list ID from URL
     this.listItemId = this.element.dataset.listItemId
     this.originalValue = this.inputTarget.value
   }
@@ -52,12 +50,12 @@ export default class extends Controller {
       body: JSON.stringify({ quantity: newQuantity })
     })
     .then(response => response.json())
-    .then(data => {
-      console.log('Quantity updated:', data)
-    })
     .catch(error => {
       console.error('Error updating quantity:', error)
-      alert('Failed to update quantity')
+      alert('Unable to update quantity. Please try again.')
+      // Revert the display
+      this.displayTarget.textContent = `× ${this.originalValue}`
+      this.inputTarget.value = this.originalValue
     })
 
     this.hideForm()
@@ -76,18 +74,7 @@ export default class extends Controller {
   }
 
   getListId() {
-    // Try to get from data attribute first
     const listItems = this.element.closest('[data-controller="list-items"]')
-    if (listItems && listItems.dataset.listId) {
-      return listItems.dataset.listId
-    }
-    // Fallback: extract from URL (assuming we're on /lists/:id)
-    const pathParts = window.location.pathname.split('/')
-    const listsIndex = pathParts.indexOf('lists')
-    if (listsIndex !== -1 && pathParts[listsIndex + 1]) {
-      return pathParts[listsIndex + 1]
-    }
-    // Last resort: we're probably on root, need to get from somewhere else
-    return document.querySelector('[data-list-id]')?.dataset.listId || '1'
+    return listItems?.dataset.listId
   }
 }

@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
-  before_action :set_list, only: [:create]
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_list, only: [ :create ]
+  before_action :set_item, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @items = current_group.items

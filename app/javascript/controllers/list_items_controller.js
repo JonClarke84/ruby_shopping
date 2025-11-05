@@ -2,7 +2,6 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   connect() {
-    console.log("List items controller connected")
   }
 
   toggle(event) {
@@ -10,8 +9,6 @@ export default class extends Controller {
     const listItemId = checkbox.dataset.listItemId
     const listId = checkbox.dataset.listId
     const ticked = checkbox.checked
-
-    console.log("Toggling list item", { listItemId, listId, ticked })
 
     fetch(`/lists/${listId}/list_items/${listItemId}/toggle`, {
       method: 'PATCH',
@@ -21,12 +18,8 @@ export default class extends Controller {
       },
       body: JSON.stringify({ ticked: ticked })
     })
-    .then(response => {
-      console.log("Response status:", response.status)
-      return response.json()
-    })
+    .then(response => response.json())
     .then(data => {
-      console.log("Response data:", data)
       const card = checkbox.closest('.list-item-card')
       if (ticked) {
         card.classList.add('list-item-ticked')
@@ -37,6 +30,7 @@ export default class extends Controller {
     .catch(error => {
       console.error('Error toggling item:', error)
       checkbox.checked = !ticked // Revert on error
+      alert('Unable to update item. Please try again.')
     })
   }
 }
