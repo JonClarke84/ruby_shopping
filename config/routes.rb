@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     resources :list_items, only: [ :update, :destroy ] do
       member do
         patch :toggle
+        patch :reorder
       end
     end
   end
