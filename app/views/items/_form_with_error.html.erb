@@ -1,0 +1,19 @@
+<%= form_with model: [list, item], class: "add-item-form" do |form| %>
+  <% if error %>
+    <div style="color: #d32f2f; margin-bottom: 1rem; padding: 0.5rem; background: #ffebee; border-radius: 4px;">
+      <%= error %>
+    </div>
+  <% end %>
+  <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+    <div style="flex: 1;">
+      <%= form.label "Item name" %>
+      <%= form.text_field "name" %>
+    </div>
+    <div style="width: 150px;">
+      <%= form.label "Quantity" %>
+      <%= form.number_field "quantity", min: 1, value: 1 %>
+    </div>
+  </div>
+  <%= form.hidden_field "group_id", value: list.group_id %>
+  <%= form.submit "Add item", class: "button" %>
+<% end %>

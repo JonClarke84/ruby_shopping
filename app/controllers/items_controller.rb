@@ -15,15 +15,21 @@ class ItemsController < ApplicationController
   end
 
   def create
-    @item = Item.new(name: item_params[:name], group_id: current_group.id)
-    if @item.save
+    # Find or create item with this name in the group
+    @item = current_group.items.find_or_create_by(name: item_params[:name])
+
+    # Check if this item is already on the list
+    if @list.list_items.exists?(item_id: @item.id)
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.update("new_item", partial: "items/form_with_error", locals: { list: @list, item: Item.new, error: "#{@item.name} is already on this list" }) }
+        format.html { redirect_to root_path, alert: "#{@item.name} is already on this list" }
+      end
+    else
       @list_item = @list.list_items.create(item: @item, quantity: item_params[:quantity])
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to root_path }
       end
-    else
-      render :new, status: :unprocessable_entity
     end
   end
 

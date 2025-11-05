@@ -159,3 +159,4 @@ These users can be used to test:
 5. **Authorization checks:**
    - Always verify `resource.group_id == current_group.id` before allowing access
    - Use `before_action :authorize_<resource>` pattern consistently
+- Always assume the server is running
