@@ -752,13 +752,9 @@ form[data-turbo-confirm] button:hover {
 /* Sortable.js Drag and Drop */
 .list-item-card {
   cursor: move;
+  touch-action: pan-y;
   -webkit-user-select: none;
   user-select: none;
-}
-
-/* Enable touch-action blocking when actively dragging */
-.list-items-grid[data-dragging="true"] .list-item-card {
-  touch-action: none;
 }
 
 .sortable-ghost {
