@@ -11,9 +11,13 @@ export default class extends Controller {
       easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
 
       // Touch delay to prevent accidental drag while scrolling
-      delay: 200,
+      delay: 150,
       delayOnTouchOnly: true,
       touchStartThreshold: 3,
+
+      // Force fallback mode for better mobile control
+      forceFallback: true,
+      fallbackTolerance: 3,
 
       // Disable scroll during drag to prevent direction change issues
       scroll: true,
