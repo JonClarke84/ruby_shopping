@@ -5,18 +5,15 @@ one:
   item: one
   quantity: 2
   ticked: false
-  sort_order: 1.0
 
 two:
   list: one
   item: two
   quantity: 1
   ticked: true
-  sort_order: 2.0
 
 three:
   list: two
   item: one
   quantity: 3
   ticked: false
-  sort_order: 1.0
