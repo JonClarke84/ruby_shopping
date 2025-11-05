@@ -1,9 +1,43 @@
-<p style="color: green"><%= notice %></p>
-
 <%= render @list %>
 
-<div>
-  <%= link_to "Back to lists", lists_path %>
+<div class="card">
+  <div class="card-header">
+    <h2>Meals</h2>
+  </div>
+  <% if @list.meals.any? %>
+    <ul>
+      <% @list.list_meals.includes(:meal).order(:date).group_by(&:date).each do |date, list_meals| %>
+        <li>
+          <strong><%= date.strftime("%A") %></strong>
+          <ul>
+            <% list_meals.each do |list_meal| %>
+              <li><%= list_meal.meal.name %></li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-muted">No meals added to this list.</p>
+  <% end %>
+</div>
 
-  <%= button_to "Destroy this list", @list, method: :delete %>
+<div class="card">
+  <div class="card-header">
+    <h2>Items</h2>
+  </div>
+  <% if @list.items.any? %>
+    <ul>
+      <% @list.list_items.includes(:item).order(:sort_order).each do |list_item| %>
+        <li><%= list_item.item.name %> (<%= list_item.quantity %>)</li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-muted">No items added to this list.</p>
+  <% end %>
+</div>
+
+<div style="margin-top: 2rem;">
+  <%= link_to "Back to lists", all_lists_path %>
+  <%= button_to "Destroy this list", @list, method: :delete, data: { turbo_confirm: "Are you sure you want to delete this list?" } %>
 </div>

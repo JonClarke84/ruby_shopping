@@ -20,7 +20,9 @@ class SessionsController < ApplicationController
   end
 
   def switch_group
-    user = Current.user || User.first
+    return redirect_to groups_path, alert: "Please select a group" unless params[:group_id].present?
+
+    user = Current.user
     group = user.groups.find(params[:group_id])
 
     # Update user's saved preference
@@ -31,8 +33,10 @@ class SessionsController < ApplicationController
     end
 
     # Update current session if it exists
-    Current.session&.update(selected_group: group)
+    if Current.session
+      Current.session.update(selected_group: group)
+    end
 
-    redirect_to root_path, notice: "Switched to #{group.name}"
+    redirect_to groups_path, notice: "Switched to #{group.name}"
   end
 end

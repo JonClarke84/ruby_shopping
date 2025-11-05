@@ -3,46 +3,97 @@
 
   <h1>Shopping list for <%= @list.date.strftime('%A %d %B') %></h1>
 
-  <div id="list-meals">
-    <h2>Meals</h2>
+  <div class="card" id="list-meals">
+    <div class="card-header">
+      <h2>Meals</h2>
+    </div>
     <%= form_with( url: list_meals_path(@list), method: :patch, local: true ) do |form| %>
       <% 7.times do |n| %>
         <% date = @list.date + n.days %>
         <% meal = @list.meal_for_date(date) %>
-        <div>
-          <%= form.label date.strftime('%A'), style: "display: block" %>
+        <div class="field">
+          <%= form.label date.strftime('%A') %>
           <%= form.text_field "meals[#{date}]", value: meal&.name %>
         </div>
       <% end %>
       <%= form.hidden_field "group_id", value: @list.group_id %>
-      <div>
-        <%= form.submit "Update Meals" %>
+      <div style="margin-top: 1rem;">
+        <%= form.submit "Update Meals", class: "button" %>
       </div>
     <% end %>
   </div>
 
 
-  <h2>Items</h2>
-  <%= form_with model: [@list, @item] do |form| %>
-    <div>
-      <%= form.label "Item name", style: "display: block" %>
-      <%= form.text_field "name" %>
-      <%= form.label "Quantity", style: "display: block" %>
-      <%= form.number_field "quantity", min: 1, value: 1 %>
+  <div class="card" id="list-items-section">
+    <div class="card-header">
+      <h2>Items</h2>
+    </div>
+    <%= form_with model: [@list, @item], class: "add-item-form" do |form| %>
+      <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+        <div style="flex: 1;">
+          <%= form.label "Item name" %>
+          <%= form.text_field "name" %>
+        </div>
+        <div style="width: 150px;">
+          <%= form.label "Quantity" %>
+          <%= form.number_field "quantity", min: 1, value: 1 %>
+        </div>
+      </div>
       <%= form.hidden_field "group_id", value: @list.group_id %>
-    </div>
-    <div>
-      <%= form.submit "Add item" %>
-    </div>
-  <% end %>
+      <%= form.submit "Add item", class: "button" %>
+    <% end %>
 
-  <% if @list.items.any? %>
-    <ul id="list-items">
-      <% @list.list_items.each do |list_item| %>
-        <li><%= list_item.item.name %> - <%= list_item.quantity %></li>
-      <% end %>
-    </ul>
-  <% end %>
+    <% if @list.items.any? %>
+      <div id="list-items" class="list-items-grid" style="margin-top: 1.5rem;" data-controller="list-items">
+        <% @list.list_items.order(:sort_order).each do |list_item| %>
+          <div class="list-item-card <%= 'list-item-ticked' if list_item.ticked %>"
+               data-list-item-id="<%= list_item.id %>"
+               data-list-items-target="item"
+               data-controller="list-item-edit">
+            <div class="list-item-top">
+              <div class="list-item-checkbox">
+                <%= check_box_tag "ticked_#{list_item.id}", "1", list_item.ticked,
+                    data: {
+                      action: "change->list-items#toggle",
+                      list_item_id: list_item.id,
+                      list_id: @list.id
+                    } %>
+              </div>
+              <div class="list-item-content">
+                <div class="list-item-name">
+                  <%= list_item.item.name %>
+                  <span class="list-item-quantity-display" data-list-item-edit-target="display">
+                    × <%= list_item.quantity %>
+                  </span>
+                  <span class="list-item-quantity-edit" data-list-item-edit-target="form" style="display: none;">
+                    ×
+                    <%= text_field_tag "quantity_#{list_item.id}", list_item.quantity,
+                        type: "number",
+                        min: 1,
+                        class: "quantity-input",
+                        data: {
+                          list_item_edit_target: "input",
+                          action: "blur->list-item-edit#save keydown->list-item-edit#handleKeydown"
+                        } %>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="list-item-actions">
+              <%= button_tag "Edit",
+                  type: "button",
+                  class: "button-small",
+                  data: {
+                    action: "click->list-item-edit#edit",
+                    list_item_edit_target: "editButton"
+                  } %>
+              <%= button_to "Remove", list_list_item_path(@list, list_item), method: :delete, class: "button-small button-danger", form: { data: { turbo_confirm: "Remove this item from the list?" } } %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 <% else %>
   <% content_for :title, "No Lists Yet" %>
 

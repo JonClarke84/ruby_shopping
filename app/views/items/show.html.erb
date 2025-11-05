@@ -1,12 +1,7 @@
-<%= render "inventory", item: @item %>
-
 <section class="item">
-  <%= image_tag @item.featured_image if @item.featured_image.attached? %>
-
   <section class="item-info">
     <% cache @item do %>
       <h1><%= @item.name %></h1>
-      <%= @item.description %>
     <% end %>
 
     <% if authenticated? %>

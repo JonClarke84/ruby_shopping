@@ -9,6 +9,11 @@ class ListsController < ApplicationController
     @item = Item.new
   end
 
+  # GET /lists/all
+  def all
+    @lists = current_group.lists.order(date: :desc)
+  end
+
   # GET /lists/1 or /lists/1.json
   def show
   end

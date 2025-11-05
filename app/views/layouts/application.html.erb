@@ -23,7 +23,6 @@
   </head>
 
   <body>
-    <div class="notice"><%= notice %></div>
     <nav>
       <div>
         <%= link_to "Home", root_path %>
@@ -33,7 +32,7 @@
         <details>
           <summary><%= Current.session&.selected_group&.name || "Menu" %></summary>
           <ul class="dropdown-menu">
-            <li><%= link_to "Lists", lists_path %></li>
+            <li><%= link_to "Lists", all_lists_path %></li>
             <li><%= link_to "Manage groups", groups_path %></li>
             <li><%= link_to "Items", items_path %></li>
             <% if authenticated? %>
@@ -47,6 +46,9 @@
         </details>
       </div>
     </nav>
+    <% if notice.present? %>
+      <div class="notice"><%= notice %></div>
+    <% end %>
     <main>
       <%= link_to "Login", new_session_path unless authenticated? %>
       <%= yield %>
