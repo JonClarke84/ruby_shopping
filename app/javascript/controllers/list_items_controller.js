@@ -15,14 +15,10 @@ export default class extends Controller {
       delayOnTouchOnly: true,
       touchStartThreshold: 3,
 
-      // Force fallback for better mobile control without fallbackOnBody
-      forceFallback: true,
-      fallbackTolerance: 3,
-
-      // Enable auto-scroll when dragging near edges
+      // Disable scroll during drag to prevent direction change issues
       scroll: true,
-      scrollSensitivity: 60,
-      scrollSpeed: 20,
+      scrollSensitivity: 30,
+      scrollSpeed: 10,
       bubbleScroll: true,
 
       // Improve swap behavior for direction changes
@@ -41,7 +37,6 @@ export default class extends Controller {
       chosenClass: 'sortable-chosen',
       dragClass: 'sortable-drag',
 
-      onStart: this.handleDragStart.bind(this),
       onEnd: this.handleReorder.bind(this)
     })
   }
@@ -51,11 +46,6 @@ export default class extends Controller {
     if (this.sortable) {
       this.sortable.destroy()
     }
-  }
-
-  handleDragStart(event) {
-    // Enable touch-action blocking when drag starts
-    this.element.dataset.dragging = 'true'
   }
 
   toggle(event) {
@@ -89,10 +79,6 @@ export default class extends Controller {
   }
 
   handleReorder(event) {
-    // Disable touch-action blocking when drag ends
-    this.element.dataset.dragging = 'false'
-
-
     const item = event.item
     const listItemId = item.dataset.listItemId
     const listId = item.dataset.listId
