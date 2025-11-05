@@ -15,10 +15,18 @@ Rails.application.routes.draw do
     end
   end
   resources :lists do
+    collection do
+      get :all
+    end
     resources :meals, only: [ :create, :update, :destroy ]
     patch :meals, to: "meals#update"
 
     resources :items, only: [ :index, :new, :create ]
+    resources :list_items, only: [ :update, :destroy ] do
+      member do
+        patch :toggle
+      end
+    end
   end
 
   resource :session

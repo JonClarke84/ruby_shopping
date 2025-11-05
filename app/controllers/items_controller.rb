@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
-  before_action :set_list
+  before_action :set_list, only: [ :create ]
+  before_action :set_item, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @items = current_group.items
@@ -41,6 +42,10 @@ class ItemsController < ApplicationController
 
   def set_list
     @list = current_group.lists.find(params[:list_id]) if current_group.lists.present?
+  end
+
+  def set_item
+    @item = current_group.items.find(params[:id])
   end
 
   def item_params

@@ -21,7 +21,10 @@ class ListsTest < ApplicationSystemTestCase
 
   test "should destroy List" do
     visit list_url(@list)
-    click_on "Destroy this list", match: :first
+
+    accept_confirm do
+      click_on "Destroy this list", match: :first
+    end
 
     assert_text "List was successfully destroyed"
   end
