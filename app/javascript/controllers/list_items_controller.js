@@ -37,6 +37,7 @@ export default class extends Controller {
       chosenClass: 'sortable-chosen',
       dragClass: 'sortable-drag',
 
+      onStart: this.handleDragStart.bind(this),
       onEnd: this.handleReorder.bind(this)
     })
   }
@@ -46,6 +47,22 @@ export default class extends Controller {
     if (this.sortable) {
       this.sortable.destroy()
     }
+
+    // Remove event listeners
+    if (this.touchMoveHandler) {
+      document.removeEventListener('touchmove', this.touchMoveHandler)
+    }
+  }
+
+  handleDragStart(event) {
+    // Prevent scrolling during drag
+    this.isDragging = true
+    this.touchMoveHandler = (e) => {
+      if (this.isDragging) {
+        e.preventDefault()
+      }
+    }
+    document.addEventListener('touchmove', this.touchMoveHandler, { passive: false })
   }
 
   toggle(event) {
@@ -79,6 +96,13 @@ export default class extends Controller {
   }
 
   handleReorder(event) {
+    // Re-enable scrolling after drag
+    this.isDragging = false
+    if (this.touchMoveHandler) {
+      document.removeEventListener('touchmove', this.touchMoveHandler)
+      this.touchMoveHandler = null
+    }
+
     const item = event.item
     const listItemId = item.dataset.listItemId
     const listId = item.dataset.listId
