@@ -15,10 +15,11 @@ export default class extends Controller {
       delayOnTouchOnly: true,
       touchStartThreshold: 3,
 
-      // Disable scroll during drag to prevent direction change issues
+      // Enable auto-scroll when dragging near edges
       scroll: true,
-      scrollSensitivity: 30,
-      scrollSpeed: 10,
+      forceAutoScrollFallback: true,
+      scrollSensitivity: 60,
+      scrollSpeed: 20,
       bubbleScroll: true,
 
       // Improve swap behavior for direction changes
