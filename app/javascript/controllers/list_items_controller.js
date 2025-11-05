@@ -15,6 +15,17 @@ export default class extends Controller {
       delayOnTouchOnly: true,
       touchStartThreshold: 3,
 
+      // Disable scroll during drag to prevent direction change issues
+      scroll: true,
+      scrollSensitivity: 30,
+      scrollSpeed: 10,
+      bubbleScroll: true,
+
+      // Improve swap behavior for direction changes
+      swapThreshold: 0.65,
+      invertSwap: false,
+      direction: 'vertical',
+
       // Element configuration
       handle: '.list-item-card',
       draggable: '.list-item-card',
