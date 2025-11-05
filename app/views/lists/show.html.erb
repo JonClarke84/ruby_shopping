@@ -1,10 +1,9 @@
-<% if notice.present? %>
-  <div class="alert-success"><%= notice %></div>
-<% end %>
+<p style="color: green"><%= notice %></p>
 
 <%= render @list %>
 
-<div class="flex gap-4 mt-6">
-  <%= link_to "Back to lists", lists_path, class: "btn btn-secondary" %>
-  <%= button_to "Destroy this list", @list, method: :delete, class: "btn btn-danger" %>
+<div>
+  <%= link_to "Back to lists", lists_path %>
+
+  <%= button_to "Destroy this list", @list, method: :delete %>
 </div>

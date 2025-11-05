@@ -1,11 +1,11 @@
 <% content_for :title, "New list" %>
 
-<div class="max-w-md">
-  <h1>New list</h1>
+<h1>New list</h1>
 
-  <%= render "form", list: @list %>
+<%= render "form", list: @list %>
 
-  <div class="mt-6">
-    <%= link_to "Back to lists", lists_path %>
-  </div>
+<br>
+
+<div>
+  <%= link_to "Back to lists", lists_path %>
 </div>

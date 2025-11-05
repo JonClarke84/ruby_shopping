@@ -1,7 +1,8 @@
 <%= form_with model: list do |form| %>
   <% if list.errors.any? %>
-    <div class="alert-error mb-6">
-      <h3><%= pluralize(list.errors.count, "error") %> prohibited this list from being saved:</h3>
+    <div style="color: red">
+      <h2><%= pluralize(list.errors.count, "error") %> prohibited this list from being saved:</h2>
+
       <ul>
         <% list.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -10,12 +11,12 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= form.label :date, "Shopping date", class: "label" %>
-    <%= form.date_field :date, class: "input" %>
+  <div>
+    <%= form.label "Shopping date", style: "display: block" %>
+    <%= form.date_field :date %>
   </div>
 
   <div>
-    <%= form.submit class: "btn btn-primary" %>
+    <%= form.submit %>
   </div>
 <% end %>

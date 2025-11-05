@@ -23,8 +23,5 @@ module RubyShopping
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-
-    # Add Tailwind CSS build output to asset load path for Propshaft
-    config.assets.paths << Rails.root.join("app/assets/builds")
   end
 end

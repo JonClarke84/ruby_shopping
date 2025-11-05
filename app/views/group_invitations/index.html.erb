@@ -1,39 +1,30 @@
 <h1>Group Invitations</h1>
 
-<% if flash[:alert] %>
-  <div class="alert-error"><%= flash[:alert] %></div>
-<% end %>
-
-<% if flash[:notice] %>
-  <div class="alert-success"><%= flash[:notice] %></div>
-<% end %>
+<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
+<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
 
 <% if @invitations.any? %>
-  <p class="text-lg mb-6">You have <%= pluralize(@invitations.count, "pending invitation") %>:</p>
+  <p>You have <%= pluralize(@invitations.count, "pending invitation") %>:</p>
 
-  <div class="grid-cols-1 md:grid-cols-2">
+  <div class="invitations-list">
     <% @invitations.each do |invitation| %>
-      <div class="card">
+      <div class="invitation-card" style="border: 1px solid #ccc; padding: 1rem; margin: 1rem 0;">
         <h3><%= invitation.group.name %></h3>
-        <p class="text-base mb-2">
+        <p>
           <strong>Invited by:</strong> <%= invitation.invited_by.first_name %> <%= invitation.invited_by.last_name %>
         </p>
-        <p class="text-base mb-4">
+        <p>
           <strong>Invited:</strong> <%= time_ago_in_words(invitation.created_at) %> ago
         </p>
-        <div class="flex gap-2">
-          <%= button_to "Accept", accept_group_invitation_path(invitation), method: :post, class: "btn btn-primary btn-small" %>
-          <%= button_to "Decline", decline_group_invitation_path(invitation), method: :post, class: "btn btn-danger btn-small" %>
+        <div class="invitation-actions">
+          <%= button_to "Accept", accept_group_invitation_path(invitation), method: :post, style: "background: green; color: white; padding: 0.5rem 1rem; border: none; cursor: pointer;" %>
+          <%= button_to "Decline", decline_group_invitation_path(invitation), method: :post, style: "background: red; color: white; padding: 0.5rem 1rem; border: none; cursor: pointer; margin-left: 0.5rem;" %>
         </div>
       </div>
     <% end %>
   </div>
 <% else %>
-  <div class="card">
-    <p class="text-lg">You have no pending invitations.</p>
-  </div>
+  <p>You have no pending invitations.</p>
 <% end %>
 
-<div class="mt-6">
-  <%= link_to "Back to groups", groups_path %>
-</div>
+<%= link_to "Back to groups", groups_path %>

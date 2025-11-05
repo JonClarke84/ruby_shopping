@@ -1,24 +1,17 @@
-<div class="max-w-md">
-  <h1>Invite to <%= @group.name %></h1>
+<h1>Invite to <%= @group.name %></h1>
 
-  <% if flash[:alert] %>
-    <div class="alert-error"><%= flash[:alert] %></div>
-  <% end %>
+<%= tag.div(flash[:alert], class: "alert") if flash[:alert] %>
+<%= tag.div(flash[:notice], class: "notice") if flash[:notice] %>
 
-  <% if flash[:notice] %>
-    <div class="alert-success"><%= flash[:notice] %></div>
-  <% end %>
+<%= form_with url: invite_group_path(@group), method: :post do |form| %>
+  <div>
+    <%= form.label :email, "Email address" %>
+    <%= form.email_field :email, required: true, placeholder: "user@example.com" %>
+  </div>
 
-  <%= form_with url: invite_group_path(@group), method: :post do |form| %>
-    <div class="form-group">
-      <%= form.label :email, "Email address", class: "label" %>
-      <%= form.email_field :email, required: true, placeholder: "user@example.com", class: "input" %>
-    </div>
+  <div>
+    <%= form.submit "Send Invitation" %>
+  </div>
+<% end %>
 
-    <div class="mb-6">
-      <%= form.submit "Send Invitation", class: "btn btn-primary w-full" %>
-    </div>
-  <% end %>
-
-  <%= link_to "Back to groups", groups_path %>
-</div>
+<%= link_to "Back to groups", groups_path %>

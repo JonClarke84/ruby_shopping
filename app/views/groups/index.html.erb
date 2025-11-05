@@ -1,34 +1,30 @@
 <h1>Manage Groups</h1>
 
-<div class="mb-6">
-  <%= link_to 'Create New Group', new_group_path, class: "btn btn-primary" %>
-</div>
+<%= link_to 'Create New Group', new_group_path %>
 
 <h2>Your Groups</h2>
 <% if @groups.any? %>
   <%= form_with url: switch_group_path, method: :patch do |f| %>
-    <div class="grid-cols-1 md:grid-cols-2 mb-6">
+    <div class="groups-cards">
       <% @groups.each do |group| %>
-        <div class="radio-card">
-          <div class="mb-4">
-            <%= f.radio_button :group_id, group.id, checked: group == Current.session.selected_group, class: "mr-2" %>
-            <%= f.label "group_id_#{group.id}", group.name, class: "text-xl font-medium" %>
+        <div class="group-card">
+          <div class="group-radio">
+            <%= f.radio_button :group_id, group.id, checked: group == Current.session.selected_group %>
+            <%= f.label "group_id_#{group.id}", group.name %>
           </div>
-          <div class="flex gap-2 flex-col">
-            <%= link_to 'Edit', edit_group_path(group), class: "btn btn-secondary btn-small" %>
-            <%= link_to 'Invite to group', invite_group_path(group), class: "btn btn-secondary btn-small" %>
+          <div class="group-actions">
+            <%= link_to 'Edit', edit_group_path(group) %>
+            <%= link_to 'Invite to group', invite_group_path(group) %>
             <% user_group = Current.user.user_groups.find_by(group: group) %>
             <% unless user_group&.is_default %>
-              <%= button_to 'Leave', leave_group_path(group), method: :delete, data: { turbo_confirm: "Are you sure you want to leave #{group.name}?" }, class: "btn btn-danger btn-small" %>
+              <%= button_to 'Leave', leave_group_path(group), method: :delete, data: { turbo_confirm: "Are you sure you want to leave #{group.name}?" } %>
             <% end %>
           </div>
         </div>
       <% end %>
     </div>
-    <%= f.submit 'Switch to selected group', class: "btn btn-primary" %>
+    <%= f.submit 'Switch to selected group' %>
   <% end %>
 <% else %>
-  <div class="card">
-    <p class="text-lg">You are not a member of any groups yet.</p>
-  </div>
+  <p>You are not a member of any groups yet.</p>
 <% end %>

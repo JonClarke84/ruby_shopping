@@ -3,63 +3,49 @@
 
   <h1>Shopping list for <%= @list.date.strftime('%A %d %B') %></h1>
 
-  <div id="list-meals" class="card mb-8">
+  <div id="list-meals">
     <h2>Meals</h2>
     <%= form_with( url: list_meals_path(@list), method: :patch, local: true ) do |form| %>
-      <div class="grid-cols-1 md:grid-cols-2">
-        <% 7.times do |n| %>
-          <% date = @list.date + n.days %>
-          <% meal = @list.meal_for_date(date) %>
-          <div class="form-group">
-            <%= form.label date.strftime('%A'), class: "label" %>
-            <%= form.text_field "meals[#{date}]", value: meal&.name, class: "input", placeholder: "What's for #{date.strftime('%A')}?" %>
-          </div>
-        <% end %>
-      </div>
+      <% 7.times do |n| %>
+        <% date = @list.date + n.days %>
+        <% meal = @list.meal_for_date(date) %>
+        <div>
+          <%= form.label date.strftime('%A'), style: "display: block" %>
+          <%= form.text_field "meals[#{date}]", value: meal&.name %>
+        </div>
+      <% end %>
       <%= form.hidden_field "group_id", value: @list.group_id %>
-      <div class="mt-4">
-        <%= form.submit "Update Meals", class: "btn btn-primary" %>
+      <div>
+        <%= form.submit "Update Meals" %>
       </div>
     <% end %>
   </div>
 
-  <div class="card mb-8">
-    <h2>Add Item</h2>
-    <%= form_with model: [@list, @item] do |form| %>
-      <div class="flex gap-4 mb-4">
-        <div class="form-group flex-1">
-          <%= form.label "Item name", class: "label" %>
-          <%= form.text_field "name", class: "input", placeholder: "e.g. Milk, Eggs, Bread" %>
-        </div>
-        <div class="form-group w-quantity">
-          <%= form.label "Quantity", class: "label" %>
-          <%= form.number_field "quantity", min: 1, value: 1, class: "input" %>
-        </div>
-      </div>
+
+  <h2>Items</h2>
+  <%= form_with model: [@list, @item] do |form| %>
+    <div>
+      <%= form.label "Item name", style: "display: block" %>
+      <%= form.text_field "name" %>
+      <%= form.label "Quantity", style: "display: block" %>
+      <%= form.number_field "quantity", min: 1, value: 1 %>
       <%= form.hidden_field "group_id", value: @list.group_id %>
-      <%= form.submit "Add item", class: "btn btn-primary" %>
-    <% end %>
-  </div>
+    </div>
+    <div>
+      <%= form.submit "Add item" %>
+    </div>
+  <% end %>
 
   <% if @list.items.any? %>
-    <div class="card">
-      <h2>Shopping List</h2>
-      <ul id="list-items">
-        <% @list.list_items.each do |list_item| %>
-          <li class="list-item">
-            <span><%= list_item.item.name %></span>
-            <span class="text-lg"><%= list_item.quantity %></span>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+    <ul id="list-items">
+      <% @list.list_items.each do |list_item| %>
+        <li><%= list_item.item.name %> - <%= list_item.quantity %></li>
+      <% end %>
+    </ul>
   <% end %>
 <% else %>
   <% content_for :title, "No Lists Yet" %>
 
-  <div class="text-center max-w-md empty-state-lg">
-    <h1>No lists yet for this group</h1>
-    <p class="mb-6 text-lg">Get started by creating your first shopping list!</p>
-    <%= link_to "Create your first list", new_list_path, class: "btn btn-primary" %>
-  </div>
+  <h1>No lists yet for this group</h1>
+  <p><%= link_to "Create your first list", new_list_path %></p>
 <% end %>
