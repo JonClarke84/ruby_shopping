@@ -28,71 +28,27 @@
     <div class="card-header">
       <h2>Items</h2>
     </div>
-    <%= form_with model: [@list, @item], class: "add-item-form" do |form| %>
-      <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-        <div style="flex: 1;">
-          <%= form.label "Item name" %>
-          <%= form.text_field "name" %>
+    <div id="new_item">
+      <%= form_with model: [@list, @item], class: "add-item-form" do |form| %>
+        <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+          <div style="flex: 1;">
+            <%= form.label "Item name" %>
+            <%= form.text_field "name" %>
+          </div>
+          <div style="width: 150px;">
+            <%= form.label "Quantity" %>
+            <%= form.number_field "quantity", min: 1, value: 1 %>
+          </div>
         </div>
-        <div style="width: 150px;">
-          <%= form.label "Quantity" %>
-          <%= form.number_field "quantity", min: 1, value: 1 %>
-        </div>
-      </div>
-      <%= form.hidden_field "group_id", value: @list.group_id %>
-      <%= form.submit "Add item", class: "button" %>
-    <% end %>
+        <%= form.hidden_field "group_id", value: @list.group_id %>
+        <%= form.submit "Add item", class: "button" %>
+      <% end %>
+    </div>
 
     <% if @list.items.any? %>
       <div id="list-items" class="list-items-grid" style="margin-top: 1.5rem;" data-controller="list-items">
         <% @list.list_items.order(:sort_order).each do |list_item| %>
-          <div class="list-item-card <%= 'list-item-ticked' if list_item.ticked %>"
-               draggable="true"
-               data-list-item-id="<%= list_item.id %>"
-               data-list-id="<%= @list.id %>"
-               data-list-items-target="item"
-               data-controller="list-item-edit"
-               data-action="dragstart->list-items#dragStart dragend->list-items#dragEnd dragover->list-items#dragOver drop->list-items#drop touchstart->list-items#touchStart touchmove->list-items#touchMove touchend->list-items#touchEnd touchcancel->list-items#touchCancel">
-            <div class="list-item-top">
-              <div class="list-item-checkbox">
-                <%= check_box_tag "ticked_#{list_item.id}", "1", list_item.ticked,
-                    data: {
-                      action: "change->list-items#toggle",
-                      list_item_id: list_item.id,
-                      list_id: @list.id
-                    } %>
-              </div>
-              <div class="list-item-content">
-                <div class="list-item-name">
-                  <%= list_item.item.name %>
-                  <span class="list-item-quantity-display" data-list-item-edit-target="display">
-                    × <%= list_item.quantity %>
-                  </span>
-                  <span class="list-item-quantity-edit" data-list-item-edit-target="form" style="display: none;">
-                    ×
-                    <%= text_field_tag "quantity_#{list_item.id}", list_item.quantity,
-                        type: "number",
-                        min: 1,
-                        class: "quantity-input",
-                        data: {
-                          list_item_edit_target: "input",
-                          action: "blur->list-item-edit#save keydown->list-item-edit#handleKeydown"
-                        } %>
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="list-item-actions">
-              <%= button_tag "Edit",
-                  type: "button",
-                  class: "button-small",
-                  data: {
-                    action: "click->list-item-edit#edit",
-                    list_item_edit_target: "editButton"
-                  } %>
-              <%= button_to "Remove", list_list_item_path(@list, list_item), method: :delete, class: "button-small button-danger", form: { data: { turbo_confirm: "Remove this item from the list?" } } %>
-            </div>
-          </div>
+          <%= render partial: "list_items/list_item", locals: { list_item: list_item } %>
         <% end %>
       </div>
     <% end %>

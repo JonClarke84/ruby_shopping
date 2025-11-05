@@ -1,0 +1,49 @@
+<% if @list.list_items.count == 1 %>
+  <%# This was the first item, so we need to replace the entire section to add the container %>
+  <%= turbo_stream.update "list-items-section" do %>
+    <div class="card-header">
+      <h2>Items</h2>
+    </div>
+    <%= form_with model: [@list, Item.new], class: "add-item-form" do |form| %>
+      <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+        <div style="flex: 1;">
+          <%= form.label "Item name" %>
+          <%= form.text_field "name" %>
+        </div>
+        <div style="width: 150px;">
+          <%= form.label "Quantity" %>
+          <%= form.number_field "quantity", min: 1, value: 1 %>
+        </div>
+      </div>
+      <%= form.hidden_field "group_id", value: @list.group_id %>
+      <%= form.submit "Add item", class: "button" %>
+    <% end %>
+
+    <div id="list-items" class="list-items-grid" style="margin-top: 1.5rem;" data-controller="list-items">
+      <%= render partial: "list_items/list_item", locals: { list_item: @list_item } %>
+    </div>
+  <% end %>
+<% else %>
+  <%# Append the new item to the existing list %>
+  <%= turbo_stream.append "list-items" do %>
+    <%= render partial: "list_items/list_item", locals: { list_item: @list_item } %>
+  <% end %>
+
+  <%# Reset the form %>
+  <%= turbo_stream.update "new_item" do %>
+    <%= form_with model: [@list, Item.new], class: "add-item-form" do |form| %>
+      <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+        <div style="flex: 1;">
+          <%= form.label "Item name" %>
+          <%= form.text_field "name" %>
+        </div>
+        <div style="width: 150px;">
+          <%= form.label "Quantity" %>
+          <%= form.number_field "quantity", min: 1, value: 1 %>
+        </div>
+      </div>
+      <%= form.hidden_field "group_id", value: @list.group_id %>
+      <%= form.submit "Add item", class: "button" %>
+    <% end %>
+  <% end %>
+<% end %>

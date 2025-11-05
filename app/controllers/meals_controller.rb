@@ -18,7 +18,7 @@ class MealsController < ApplicationController
       end
     end
 
-    redirect_to @list, notice: "Meals updated successfully"
+    redirect_to root_path, notice: "Meals updated successfully"
   end
 
   def destroy

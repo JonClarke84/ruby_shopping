@@ -17,8 +17,11 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(name: item_params[:name], group_id: current_group.id)
     if @item.save
-      @list.list_items.create(item: @item, quantity: item_params[:quantity])
-      redirect_to root_path
+      @list_item = @list.list_items.create(item: @item, quantity: item_params[:quantity])
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to root_path }
+      end
     else
       render :new, status: :unprocessable_entity
     end
