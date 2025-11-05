@@ -1,24 +1,31 @@
 <%= render "inventory", item: @item %>
 
-<section class="item">
-  <%= image_tag @item.featured_image if @item.featured_image.attached? %>
-
-  <section class="item-info">
-    <% cache @item do %>
-      <h1><%= @item.name %></h1>
-      <%= @item.description %>
+<div class="card mb-6">
+  <div class="flex flex-col md:grid-cols-2 gap-4">
+    <% if @item.featured_image.attached? %>
+      <div class="flex-1">
+        <%= image_tag @item.featured_image, class: "w-full shadow-pixel" %>
+      </div>
     <% end %>
 
-    <% if authenticated? %>
-      <h2>Edit</h2>
-      <%= link_to "Edit", edit_item_path(@item) %>
+    <div class="flex-1">
+      <% cache @item do %>
+        <h1><%= @item.name %></h1>
+        <% if @item.description.present? %>
+          <p class="text-lg mb-6"><%= @item.description %></p>
+        <% end %>
+      <% end %>
 
-      <h2>Delete</h2>
-      <%= button_to "Delete", @item, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
-    <% end %>
-  </section>
-</section>
+      <% if authenticated? %>
+        <div class="flex gap-4 mt-6">
+          <%= link_to "Edit", edit_item_path(@item), class: "btn btn-secondary" %>
+          <%= button_to "Delete", @item, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
 
-<footer>
+<div class="mt-6">
   <%= link_to "Back to items", items_path %>
-</footer>
+</div>

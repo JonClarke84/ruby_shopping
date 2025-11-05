@@ -1,9 +1,17 @@
 <h1>All items in <%= @group.name %></h1>
 
-<ul id="items">
-  <% @items.each do |item| %>
-    <li>
-      <%= link_to item.name, item %> 
-    </li>
-  <% end %>
-</ul>
+<% if @items.any? %>
+  <div class="card">
+    <ul id="items">
+      <% @items.each do |item| %>
+        <li class="list-item">
+          <%= link_to item.name, item %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% else %>
+  <div class="text-center max-w-md empty-state">
+    <p class="text-lg">No items yet. Add items from your shopping lists to see them here.</p>
+  </div>
+<% end %>

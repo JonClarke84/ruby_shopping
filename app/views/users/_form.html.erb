@@ -1,7 +1,7 @@
 <%= form_with model: user do |form| %>
   <% if user.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+    <div class="alert-error mb-6">
+      <h3><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h3>
       <ul>
         <% user.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -10,33 +10,36 @@
     </div>
   <% end %>
 
-  <fieldset>
-    <div>
-      <%= form.label :first_name %>
-      <%= form.text_field :first_name, required: true %>
+  <fieldset class="fieldset">
+    <legend class="legend">User Information</legend>
+
+    <div class="form-group">
+      <%= form.label :first_name, "First name", class: "label" %>
+      <%= form.text_field :first_name, required: true, class: "input" %>
     </div>
 
-    <div>
-      <%= form.label :last_name %>
-      <%= form.text_field :last_name, required: true %>
+    <div class="form-group">
+      <%= form.label :last_name, "Last name", class: "label" %>
+      <%= form.text_field :last_name, required: true, class: "input" %>
     </div>
 
-    <div>
-      <%= form.label :email_address %>
-      <%= form.email_field :email_address, required: true %>
+    <div class="form-group">
+      <%= form.label :email_address, "Email address", class: "label" %>
+      <%= form.email_field :email_address, required: true, class: "input" %>
     </div>
 
-    <div>
-      <%= form.label :password %>
-      <%= form.password_field :password, required: true %>
+    <div class="form-group">
+      <%= form.label :password, "Password", class: "label" %>
+      <%= form.password_field :password, required: true, class: "input" %>
     </div>
 
-    <div>
-      <%= form.label :password_confirmation, "Confirm password" %>
-      <%= form.password_field :password_confirmation, required: true %>
+    <div class="form-group">
+      <%= form.label :password_confirmation, "Confirm password", class: "label" %>
+      <%= form.password_field :password_confirmation, required: true, class: "input" %>
     </div>
   </fieldset>
-  <div>
-    <%= form.submit %>
+
+  <div class="mt-6">
+    <%= form.submit class: "btn btn-primary w-full" %>
   </div>
 <% end %>
