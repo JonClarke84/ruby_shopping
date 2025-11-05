@@ -749,23 +749,26 @@ form[data-turbo-confirm] button:hover {
   animation: glow 2s ease-in-out infinite;
 }
 
-/* Drag and Drop */
-.list-item-card[draggable="true"] {
+/* Sortable.js Drag and Drop */
+.list-item-card {
   cursor: move;
 }
 
-.list-item-card.dragging {
-  opacity: 0.5;
-  transform: scale(0.95);
+.sortable-ghost {
+  opacity: 0.4;
+  background: var(--color-primary-light);
+}
+
+.sortable-chosen {
   cursor: grabbing;
 }
 
-.list-item-card.touch-dragging {
-  opacity: 0.7;
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.sortable-fallback {
+  opacity: 1 !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3) !important;
+  cursor: grabbing !important;
+  transition: none !important;
+  z-index: 9999;
 }
 
 .list-items-grid {
