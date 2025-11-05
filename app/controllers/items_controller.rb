@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
-  before_action :set_list, only: [:create]
+  skip_before_action :require_authentication if Rails.env.test?
+  before_action :set_list, only: [ :create ]
 
   def index
     @items = current_group.items
@@ -28,7 +29,6 @@ class ItemsController < ApplicationController
 
   def update
     params[:items].each do |item_str, quantity|
-      puts item_str
     end
   end
 

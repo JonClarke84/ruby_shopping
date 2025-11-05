@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
 
 /* Base Styles */
 * {
@@ -409,6 +409,7 @@ summary::-webkit-details-marker {
 
 /* Width utilities */
 .w-full { width: 100%; }
+.w-quantity { width: 150px; }
 .max-w-md { max-width: 28rem; }
 .max-w-2xl { max-width: 42rem; }
 
@@ -417,3 +418,7 @@ summary::-webkit-details-marker {
 .text-sm { font-size: 0.875rem; }
 .text-base { font-size: 1rem; }
 .text-lg { font-size: 1.125rem; }
+
+/* Spacing utilities */
+.empty-state { margin: 2rem auto; }
+.empty-state-lg { margin: 4rem auto; }
