@@ -756,6 +756,7 @@ form[data-turbo-confirm] button:hover {
 
 .list-item-card {
   cursor: move;
+  touch-action: none;
   -webkit-user-select: none;
   user-select: none;
 }
