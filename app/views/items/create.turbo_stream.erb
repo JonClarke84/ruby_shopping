@@ -9,9 +9,11 @@
 <%= turbo_stream.update "new_item" do %>
   <%= form_with model: [@list, Item.new], class: "add-item-form" do |form| %>
     <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-      <div style="flex: 1;">
+      <div style="flex: 1; position: relative;" data-controller="autocomplete" data-autocomplete-url-value="<%= search_items_path %>" data-action="click@window->autocomplete#clickOutside">
         <%= form.label "Item name" %>
-        <%= form.text_field "name" %>
+        <%= form.text_field "name", data: { autocomplete_target: "input", action: "input->autocomplete#search keydown->autocomplete#keydown" }, autocomplete: "off", name: "item[name_#{SecureRandom.hex(4)}]", id: "item_name_field" %>
+        <%= form.hidden_field "name", id: "item_name_hidden" %>
+        <div data-autocomplete-target="results" class="autocomplete-results"></div>
       </div>
       <div style="width: 150px;">
         <%= form.label "Quantity" %>

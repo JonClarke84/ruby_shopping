@@ -35,6 +35,9 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
 
   resources :items do
+    collection do
+      get :search
+    end
     resources :subscribers, only: [ :create ]
   end
 

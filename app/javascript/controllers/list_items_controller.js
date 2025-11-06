@@ -31,7 +31,7 @@ export default class extends Controller {
       direction: 'vertical',
 
       // Element configuration
-      handle: '.list-item-card',
+      handle: '.drag-handle',
       draggable: '.list-item-card',
       filter: 'button, input, a',
       preventOnFilter: false,

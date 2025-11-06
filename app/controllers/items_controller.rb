@@ -7,6 +7,21 @@ class ItemsController < ApplicationController
     @group = current_group
   end
 
+  def search
+    query = params[:q].to_s.strip
+
+    if query.length >= 3
+      @items = current_group.items
+                 .where("LOWER(name) LIKE ?", "#{query.downcase}%")
+                 .order(:name)
+                 .limit(10)
+    else
+      @items = []
+    end
+
+    render json: @items.map { |item| { id: item.id, name: item.name } }
+  end
+
   def show
   end
 
