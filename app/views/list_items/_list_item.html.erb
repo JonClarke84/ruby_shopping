@@ -4,14 +4,13 @@
      data-list-id="<%= list_item.list_id %>"
      data-list-items-target="item"
      data-controller="list-item-edit">
-  <div class="list-item-top">
-    <div class="list-item-checkbox">
-      <%= check_box_tag "ticked_#{list_item.id}", "1", list_item.ticked,
-          data: {
-            action: "change->list-items#toggle",
-            list_item_id: list_item.id,
-            list_id: list_item.list_id
-          } %>
+  <div class="list-item-main">
+    <div class="drag-handle" title="Drag to reorder">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <rect y="5" width="24" height="3" rx="1.5"/>
+        <rect y="11" width="24" height="3" rx="1.5"/>
+        <rect y="17" width="24" height="3" rx="1.5"/>
+      </svg>
     </div>
     <div class="list-item-content">
       <div class="list-item-name">
@@ -31,8 +30,17 @@
               } %>
         </span>
       </div>
+      <div class="list-item-checkbox">
+        <%= check_box_tag "ticked_#{list_item.id}", "1", list_item.ticked,
+            data: {
+              action: "change->list-items#toggle",
+              list_item_id: list_item.id,
+              list_id: list_item.list_id
+            } %>
+      </div>
     </div>
   </div>
+  <hr class="list-item-divider">
   <div class="list-item-actions">
     <%= button_tag "Edit",
         type: "button",

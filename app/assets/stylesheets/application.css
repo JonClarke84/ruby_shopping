@@ -538,19 +538,19 @@ form[data-turbo-confirm] button:hover {
 }
 
 .list-item-card {
-  display: grid;
-  grid-template-rows: auto auto;
-  gap: var(--space-sm);
-  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-lg);
   background: var(--color-bg-light);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-sm);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-md);
   transition: all var(--transition-fast);
 }
 
 .list-item-card:hover {
   border-color: var(--color-primary);
-  box-shadow: 0 2px 8px rgba(20, 184, 166, 0.1);
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
 }
 
 .list-item-ticked {
@@ -561,27 +561,44 @@ form[data-turbo-confirm] button:hover {
   text-decoration: line-through;
 }
 
-.list-item-top {
+.list-item-main {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
-}
-
-.list-item-checkbox input[type="checkbox"] {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  flex-shrink: 0;
+  gap: var(--space-lg);
 }
 
 .list-item-content {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
   min-width: 0;
 }
 
 .list-item-name {
   font-weight: 500;
+  font-size: var(--font-size-xl);
   color: var(--color-text);
+  flex: 1;
+}
+
+.list-item-checkbox input[type="checkbox"] {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.list-item-divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 0;
+}
+
+.list-item-actions {
+  display: flex;
+  gap: var(--space-md);
 }
 
 .list-item-quantity-inline {
@@ -755,9 +772,37 @@ form[data-turbo-confirm] button:hover {
 }
 
 .list-item-card {
-  cursor: move;
   -webkit-user-select: none;
   user-select: none;
+}
+
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  cursor: move;
+  cursor: grab;
+  color: var(--color-text-muted);
+  touch-action: none;
+  transition: color var(--transition-fast);
+  margin-right: var(--space-sm);
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.drag-handle:hover {
+  color: var(--color-primary);
+}
+
+.drag-handle svg {
+  pointer-events: none;
+  width: 24px;
+  height: 24px;
 }
 
 .sortable-ghost {
