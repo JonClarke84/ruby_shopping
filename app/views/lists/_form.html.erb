@@ -1,6 +1,6 @@
 <%= form_with model: list do |form| %>
   <% if list.errors.any? %>
-    <div style="color: red">
+    <div style="color: red; margin-bottom: 1.5rem;">
       <h2><%= pluralize(list.errors.count, "error") %> prohibited this list from being saved:</h2>
 
       <ul>
@@ -11,12 +11,12 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label "Shopping date", style: "display: block" %>
+  <div class="field">
+    <%= form.label "Shopping date" %>
     <%= form.date_field :date %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div style="margin-top: 1.5rem;">
+    <%= form.submit "Create List", class: "button" %>
   </div>
 <% end %>

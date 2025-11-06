@@ -1,6 +1,8 @@
 <h1>Manage Groups</h1>
 
-<%= link_to 'Create New Group', new_group_path %>
+<div style="margin-bottom: 1.5rem;">
+  <%= link_to 'Create New Group', new_group_path, class: 'button' %>
+</div>
 
 <h2>Your Groups</h2>
 <% if @groups.any? %>

@@ -1,5 +1,8 @@
 <h1>All Lists</h1>
-<%= link_to "Create New List", new_list_path, class: "button" %>
+
+<div style="margin-bottom: 1.5rem;">
+  <%= link_to "Create New List", new_list_path, class: "button" %>
+</div>
 
 <% if @lists.any? %>
   <div class="groups-cards">
