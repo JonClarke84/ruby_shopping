@@ -48,6 +48,19 @@
   --transition-normal: 200ms ease;
 }
 
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-dark: #ffffff;
+    --color-bg-medium: #1a1a1a;
+    --color-bg-light: #2d2d2d;
+    --color-text: #e5e7eb;
+    --color-text-muted: #94a3b8;
+    --color-border: #404040;
+    --color-shadow: rgba(0, 0, 0, 0.5);
+  }
+}
+
 /* Reset and Base Styles */
 * {
   box-sizing: border-box;
