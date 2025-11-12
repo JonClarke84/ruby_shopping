@@ -30,6 +30,15 @@ class ItemsController < ApplicationController
   end
 
   def create
+    # Check for blank name before proceeding
+    if item_params[:name].blank?
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.update("new_item", partial: "items/form_with_error", locals: { list: @list, item: Item.new, error: "Item name cannot be blank" }) }
+        format.html { redirect_to root_path, alert: "Item name cannot be blank" }
+      end
+      return
+    end
+
     # Find or create item with this name in the group
     @item = current_group.items.find_or_create_by(name: item_params[:name])
 
@@ -74,6 +83,7 @@ class ItemsController < ApplicationController
 
   def item_params
     params.expect(item: [ :name, :quantity ])
+    params.require(:item).permit(:name, :quantity)
   end
 
   def current_group
