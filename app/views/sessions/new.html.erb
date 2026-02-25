@@ -1,12 +1,38 @@
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+          <rect x="9" y="3" width="6" height="4" rx="1"/>
+        </svg>
+      </div>
+      <h1>Welcome back</h1>
+      <p>Sign in to your shopping list</p>
+    </div>
 
-<%= form_with url: session_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in" %>
-<% end %>
-<br>
+    <% if flash[:alert].present? %>
+      <div class="auth-alert"><%= flash[:alert] %></div>
+    <% end %>
+    <% if flash[:notice].present? %>
+      <div class="auth-notice"><%= flash[:notice] %></div>
+    <% end %>
 
-<%= link_to "Sign up", new_user_path, style: "display: block" %>
-<%= link_to "Forgot password?", new_password_path %>
+    <%= form_with url: session_path, class: "auth-form" do |form| %>
+      <div class="form-field">
+        <label for="email_address">Email</label>
+        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], id: "email_address" %>
+      </div>
+      <div class="form-field">
+        <label for="password">Password</label>
+        <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, id: "password" %>
+      </div>
+      <%= form.submit "Sign in", class: "button button-block button-large" %>
+    <% end %>
+
+    <div class="auth-links">
+      <%= link_to "Create an account", new_user_path %>
+      <%= link_to "Forgot password?", new_password_path %>
+    </div>
+  </div>
+</div>

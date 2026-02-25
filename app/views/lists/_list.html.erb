@@ -1,7 +1,6 @@
-<div id="<%= dom_id list %>">
-  <p>
+<div id="<%= dom_id list %>" class="card mb-3">
+  <p class="text-muted mb-0">
     <strong>Date:</strong>
-    <%= list.date %>
+    <span class="font-mono"><%= list.date.strftime('%A %d %B %Y') %></span>
   </p>
-
 </div>

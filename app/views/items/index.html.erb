@@ -1,9 +1,26 @@
 <h1>All items in <%= @group.name %></h1>
 
-<ul id="items">
-  <% @items.each do |item| %>
-    <li>
-      <%= link_to item.name, item %> 
-    </li>
-  <% end %>
-</ul>
+<% if @items.any? %>
+  <div class="items-list">
+    <% @items.each do |item| %>
+      <div class="items-list-item">
+        <%= link_to item.name, item %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <div class="empty-state-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="8" y1="6" x2="21" y2="6"/>
+        <line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/>
+        <line x1="3" y1="12" x2="3.01" y2="12"/>
+        <line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+    </div>
+    <p class="empty-state-title">No items yet</p>
+    <p class="empty-state-text">Items will appear here as you add them to lists</p>
+  </div>
+<% end %>

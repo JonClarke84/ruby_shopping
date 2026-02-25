@@ -1,30 +1,39 @@
-<h1>Group Invitations</h1>
-
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
-
-<% if @invitations.any? %>
-  <p>You have <%= pluralize(@invitations.count, "pending invitation") %>:</p>
-
-  <div class="invitations-list">
-    <% @invitations.each do |invitation| %>
-      <div class="invitation-card" style="border: 1px solid #ccc; padding: 1rem; margin: 1rem 0;">
-        <h3><%= invitation.group.name %></h3>
-        <p>
-          <strong>Invited by:</strong> <%= invitation.invited_by.first_name %> <%= invitation.invited_by.last_name %>
-        </p>
-        <p>
-          <strong>Invited:</strong> <%= time_ago_in_words(invitation.created_at) %> ago
-        </p>
-        <div class="invitation-actions">
-          <%= button_to "Accept", accept_group_invitation_path(invitation), method: :post, style: "background: green; color: white; padding: 0.5rem 1rem; border: none; cursor: pointer;" %>
-          <%= button_to "Decline", decline_group_invitation_path(invitation), method: :post, style: "background: red; color: white; padding: 0.5rem 1rem; border: none; cursor: pointer; margin-left: 0.5rem;" %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-<% else %>
-  <p>You have no pending invitations.</p>
+<%= link_to groups_path, class: "back-link" do %>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+  Back to groups
 <% end %>
 
-<%= link_to "Back to groups", groups_path %>
+<h1>Invitations</h1>
+
+<% if @invitations.any? %>
+  <p class="text-muted mb-3">You have <%= pluralize(@invitations.count, "pending invitation") %></p>
+
+  <% @invitations.each do |invitation| %>
+    <div class="invitation-card">
+      <h3><%= invitation.group.name %></h3>
+      <p>
+        <strong>Invited by:</strong> <%= invitation.invited_by.first_name %> <%= invitation.invited_by.last_name %>
+      </p>
+      <p>
+        <strong>Invited:</strong> <%= time_ago_in_words(invitation.created_at) %> ago
+      </p>
+      <div class="invitation-actions">
+        <%= button_to "Accept", accept_group_invitation_path(invitation), method: :post, class: "button button-success" %>
+        <%= button_to "Decline", decline_group_invitation_path(invitation), method: :post, class: "button button-danger" %>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <div class="empty-state">
+    <div class="empty-state-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        <polyline points="22,6 12,13 2,6"/>
+      </svg>
+    </div>
+    <p class="empty-state-title">No pending invitations</p>
+    <p class="empty-state-text">You'll see group invitations here when someone invites you</p>
+  </div>
+<% end %>

@@ -1,8 +1,7 @@
-<%= form_with model: list do |form| %>
+<%= form_with model: list, class: "auth-form" do |form| %>
   <% if list.errors.any? %>
-    <div style="color: red; margin-bottom: 1.5rem;">
+    <div class="form-errors">
       <h2><%= pluralize(list.errors.count, "error") %> prohibited this list from being saved:</h2>
-
       <ul>
         <% list.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,12 +10,12 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label "Shopping date" %>
-    <%= form.date_field :date %>
+  <div class="form-field">
+    <label for="list_date">Shopping date</label>
+    <%= form.date_field :date, id: "list_date" %>
   </div>
 
-  <div style="margin-top: 1.5rem;">
-    <%= form.submit "Create List", class: "button" %>
+  <div class="form-actions">
+    <%= form.submit "Create List", class: "button button-block button-large" %>
   </div>
 <% end %>

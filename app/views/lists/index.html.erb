@@ -50,22 +50,22 @@
   <% end %>
 
   <div id="list-items-section">
-    <div id="new_item" style="display: none;">
+    <div id="new_item" class="hidden">
       <%= form_with model: [@list, @item], class: "add-item-form" do |form| %>
-        <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-          <div style="flex: 1; position: relative;" data-controller="autocomplete" data-autocomplete-url-value="<%= search_items_path %>" data-action="click@window->autocomplete#clickOutside">
+        <div class="flex gap-2 mb-2">
+          <div class="form-field" style="flex: 1; position: relative;" data-controller="autocomplete" data-autocomplete-url-value="<%= search_items_path %>" data-action="click@window->autocomplete#clickOutside">
             <%= form.label "Item name" %>
             <%= form.text_field "name", data: { autocomplete_target: "input", action: "input->autocomplete#search keydown->autocomplete#keydown" }, autocomplete: "off", name: "item[name_#{SecureRandom.hex(4)}]", id: "item_name_field", required: true, placeholder: "Enter item name" %>
             <%= form.hidden_field "name", id: "item_name_hidden", required: true %>
             <div data-autocomplete-target="results" class="autocomplete-results"></div>
           </div>
-          <div style="width: 150px;">
-            <%= form.label "Quantity" %>
+          <div class="form-field" style="width: 100px;">
+            <%= form.label "Qty" %>
             <%= form.number_field "quantity", min: 1, value: 1 %>
           </div>
         </div>
         <%= form.hidden_field "group_id", value: @list.group_id %>
-        <%= form.submit "Add item", class: "button" %>
+        <%= form.submit "Add item", class: "button button-block" %>
       <% end %>
     </div>
 
@@ -92,8 +92,17 @@
     <% end %>
   </div>
 <% else %>
-  <% content_for :title, "No Lists Yet" %>
+  <% content_for :title, "Shopping List" %>
 
-  <h1>No lists yet for this group</h1>
-  <p><%= link_to "Create your first list", new_list_path %></p>
+  <div class="empty-state">
+    <div class="empty-state-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+        <rect x="9" y="3" width="6" height="4" rx="1"/>
+      </svg>
+    </div>
+    <p class="empty-state-title">No lists yet</p>
+    <p class="empty-state-text">Create your first shopping list to get started</p>
+    <%= link_to "Create your first list", new_list_path, class: "button" %>
+  </div>
 <% end %>

@@ -1,7 +1,11 @@
-<h1>Edit</h1>
+<%= link_to items_path, class: "back-link" do %>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+  Back to items
+<% end %>
 
-<%= render "form", item: @item %>
-
-<footer>
-  <%= link_to "Back to items", items_path %>
-</footer>
+<div class="card">
+  <h2 class="mb-3">Edit Item</h2>
+  <%= render "form", item: @item %>
+</div>

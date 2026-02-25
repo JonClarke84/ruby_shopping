@@ -1,19 +1,19 @@
-<section class="item">
-  <section class="item-info">
-    <% cache @item do %>
-      <h1><%= @item.name %></h1>
-    <% end %>
+<%= link_to items_path, class: "back-link" do %>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+  Back to items
+<% end %>
 
-    <% if authenticated? %>
-      <h2>Edit</h2>
-      <%= link_to "Edit", edit_item_path(@item) %>
+<div class="card">
+  <% cache @item do %>
+    <h1><%= @item.name %></h1>
+  <% end %>
 
-      <h2>Delete</h2>
-      <%= button_to "Delete", @item, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
-    <% end %>
-  </section>
-</section>
-
-<footer>
-  <%= link_to "Back to items", items_path %>
-</footer>
+  <% if authenticated? %>
+    <div class="list-detail-actions mt-3">
+      <%= link_to "Edit", edit_item_path(@item), class: "button button-secondary" %>
+      <%= button_to "Delete", @item, method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "button-danger" %>
+    </div>
+  <% end %>
+</div>

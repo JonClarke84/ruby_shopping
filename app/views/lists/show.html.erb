@@ -1,3 +1,10 @@
+<%= link_to all_lists_path, class: "back-link" do %>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+  Back to all lists
+<% end %>
+
 <%= render @list %>
 
 <div class="card">
@@ -29,7 +36,7 @@
   <% if @list.items.any? %>
     <ul>
       <% @list.list_items.includes(:item).joins(:item).order('items.sort_order').each do |list_item| %>
-        <li><%= list_item.item.name %> (<%= list_item.quantity %>)</li>
+        <li><%= list_item.item.name %> <span class="text-muted font-mono">(&times;<%= list_item.quantity %>)</span></li>
       <% end %>
     </ul>
   <% else %>
@@ -37,7 +44,7 @@
   <% end %>
 </div>
 
-<div style="margin-top: 2rem;">
-  <%= link_to "Back to lists", all_lists_path %>
-  <%= button_to "Destroy this list", @list, method: :delete, data: { turbo_confirm: "Are you sure you want to delete this list?" } %>
+<div class="list-detail-actions">
+  <%= link_to "Edit List", edit_list_path(@list), class: "button button-secondary" %>
+  <%= button_to "Delete List", @list, method: :delete, data: { turbo_confirm: "Are you sure you want to delete this list?" }, class: "button-danger" %>
 </div>

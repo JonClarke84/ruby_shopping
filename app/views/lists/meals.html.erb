@@ -15,18 +15,21 @@
       </div>
     <% end %>
     <%= form.hidden_field "group_id", value: @list.group_id %>
-    <button type="submit" class="sheet-submit-btn" style="margin-top: var(--space-md);">Save Meals</button>
+    <button type="submit" class="sheet-submit-btn mt-3">Save Meals</button>
   <% end %>
 <% else %>
   <% content_for :title, "Meals" %>
 
   <div class="empty-state">
-    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>
-      <path d="M7 2v20"/>
-      <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>
-    </svg>
-    <p style="margin-top: var(--space-md); color: var(--color-text-muted);">Create a list first to plan meals</p>
-    <%= link_to "Create List", new_list_path, class: "button", style: "margin-top: var(--space-md);" %>
+    <div class="empty-state-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>
+        <path d="M7 2v20"/>
+        <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>
+      </svg>
+    </div>
+    <p class="empty-state-title">No meals to plan</p>
+    <p class="empty-state-text">Create a list first to plan your weekly meals</p>
+    <%= link_to "Create List", new_list_path, class: "button" %>
   </div>
 <% end %>

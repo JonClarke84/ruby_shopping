@@ -1,5 +1,9 @@
-<%= form_with model: item do |form| %>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-    <%= form.submit %>
+<%= form_with model: item, class: "auth-form" do |form| %>
+  <div class="form-field">
+    <label for="item_name">Name</label>
+    <%= form.text_field :name, id: "item_name", placeholder: "Item name" %>
+  </div>
+  <div class="form-actions">
+    <%= form.submit class: "button button-block button-large" %>
+  </div>
 <% end %>

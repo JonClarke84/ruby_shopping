@@ -1,25 +1,32 @@
-<h1>Edit Group</h1>
-
-<%= form_with model: @group do |form| %>
-  <% if @group.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
-      <ul>
-        <% @group.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div>
-    <%= form.label :name, "Group name" %>
-    <%= form.text_field :name, required: true %>
-  </div>
-
-  <div>
-    <%= form.submit "Update Group" %>
-  </div>
+<%= link_to groups_path, class: "back-link" do %>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+  Back to groups
 <% end %>
 
-<%= link_to "Back to groups", groups_path %>
+<div class="card">
+  <h2 class="mb-3">Edit Group</h2>
+
+  <%= form_with model: @group, class: "auth-form" do |form| %>
+    <% if @group.errors.any? %>
+      <div class="form-errors">
+        <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
+        <ul>
+          <% @group.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-field">
+      <label for="group_name">Group name</label>
+      <%= form.text_field :name, required: true, id: "group_name" %>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit "Update Group", class: "button button-block button-large" %>
+    </div>
+  <% end %>
+</div>

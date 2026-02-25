@@ -1,17 +1,28 @@
-<h1>Invite to <%= @group.name %></h1>
-
-<%= tag.div(flash[:alert], class: "alert") if flash[:alert] %>
-<%= tag.div(flash[:notice], class: "notice") if flash[:notice] %>
-
-<%= form_with url: invite_group_path(@group), method: :post do |form| %>
-  <div>
-    <%= form.label :email, "Email address" %>
-    <%= form.email_field :email, required: true, placeholder: "user@example.com" %>
-  </div>
-
-  <div>
-    <%= form.submit "Send Invitation" %>
-  </div>
+<%= link_to groups_path, class: "back-link" do %>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+  Back to groups
 <% end %>
 
-<%= link_to "Back to groups", groups_path %>
+<div class="card">
+  <h2 class="mb-3">Invite to <%= @group.name %></h2>
+
+  <% if flash[:alert].present? %>
+    <div class="auth-alert"><%= flash[:alert] %></div>
+  <% end %>
+  <% if flash[:notice].present? %>
+    <div class="auth-notice"><%= flash[:notice] %></div>
+  <% end %>
+
+  <%= form_with url: invite_group_path(@group), method: :post, class: "auth-form" do |form| %>
+    <div class="form-field">
+      <label for="email">Email address</label>
+      <%= form.email_field :email, required: true, placeholder: "user@example.com", id: "email" %>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit "Send Invitation", class: "button button-block button-large" %>
+    </div>
+  <% end %>
+</div>

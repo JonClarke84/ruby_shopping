@@ -42,11 +42,10 @@
       </header>
     <% end %>
 
-    <% if notice.present? %>
+    <% if notice.present? && authenticated? %>
       <div class="notice"><%= notice %></div>
     <% end %>
     <main>
-      <%= link_to "Login", new_session_path unless authenticated? %>
       <%= yield %>
     </main>
 

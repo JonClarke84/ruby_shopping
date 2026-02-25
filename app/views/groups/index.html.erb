@@ -1,10 +1,13 @@
-<h1>Manage Groups</h1>
-
-<div style="margin-bottom: 1.5rem;">
-  <%= link_to 'Create New Group', new_group_path, class: 'button' %>
+<div class="page-header">
+  <h1>Your Groups</h1>
+  <%= link_to new_group_path, class: "new-list-btn" do %>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+    New Group
+  <% end %>
 </div>
 
-<h2>Your Groups</h2>
 <% if @groups.any? %>
   <div class="groups-cards">
     <% @groups.each do |group| %>
@@ -18,18 +21,18 @@
           <div class="group-radio">
             <h3><%= group.name %></h3>
             <% if is_selected %>
-              <span class="selected-badge">Current Group</span>
+              <span class="selected-badge">Current</span>
             <% end %>
           </div>
           <div class="group-actions">
             <%= link_to 'Edit', edit_group_path(group) %>
-            <%= link_to 'Invite to group', invite_group_path(group) %>
+            <%= link_to 'Invite', invite_group_path(group) %>
             <% user_group = Current.user.user_groups.find_by(group: group) %>
             <% unless is_selected %>
-              <%= submit_tag 'Switch to this group', class: 'button' %>
+              <%= submit_tag 'Switch', class: 'button button-small' %>
             <% end %>
             <% unless user_group&.is_default %>
-              <%= link_to 'Leave', leave_group_path(group), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to leave #{group.name}?" }, class: 'button button-danger' %>
+              <%= link_to 'Leave', leave_group_path(group), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to leave #{group.name}?" }, class: 'button button-danger button-small' %>
             <% end %>
           </div>
         </form>
@@ -37,5 +40,21 @@
     <% end %>
   </div>
 <% else %>
-  <p>You are not a member of any groups yet.</p>
+  <div class="empty-state">
+    <div class="empty-state-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    </div>
+    <p class="empty-state-title">No groups yet</p>
+    <p class="empty-state-text">Create a group to start sharing shopping lists</p>
+    <%= link_to "Create your first group", new_group_path, class: "button" %>
+  </div>
 <% end %>
+
+<div class="flex justify-center mt-3">
+  <%= link_to "View Invitations", group_invitations_path, class: "button-ghost" %>
+</div>
