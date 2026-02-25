@@ -85,5 +85,4 @@ class ItemsController < ApplicationController
     params.expect(item: [ :name, :quantity ])
     params.require(:item).permit(:name, :quantity)
   end
-
 end

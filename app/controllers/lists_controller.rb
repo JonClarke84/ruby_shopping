@@ -42,7 +42,7 @@ class ListsController < ApplicationController
 
   # GET /lists/new
   def new
-    @list = List.new(date: Date.today)
+    @list = List.new(date: Date.today, end_date: Date.today + 6.days)
   end
 
   # POST /lists
@@ -93,6 +93,6 @@ class ListsController < ApplicationController
   end
 
   def list_params
-    params.expect(list: [ :date ])
+    params.expect(list: [ :date, :end_date ])
   end
 end

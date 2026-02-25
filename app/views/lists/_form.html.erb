@@ -11,8 +11,13 @@
   <% end %>
 
   <div class="form-field">
-    <label for="list_date">Shopping date</label>
+    <label for="list_date">Start date</label>
     <%= form.date_field :date, id: "list_date" %>
+  </div>
+
+  <div class="form-field">
+    <label for="list_end_date">End date</label>
+    <%= form.date_field :end_date, id: "list_end_date" %>
   </div>
 
   <div class="form-actions">

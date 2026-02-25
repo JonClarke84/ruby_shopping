@@ -2,8 +2,10 @@
 
 one:
   date: 2025-10-27
+  end_date: 2025-11-02
   group_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
 
 two:
   date: 2025-10-28
+  end_date: 2025-11-03
   group_id: <%= ActiveRecord::FixtureSet.identify(:one) %>

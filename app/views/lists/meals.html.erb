@@ -1,10 +1,9 @@
 <% if @list %>
   <% content_for :title, "Meals" %>
-  <% content_for :list_subtitle, @list.date.strftime('%A %d %B') %>
+  <% content_for :list_subtitle, "#{@list.date.strftime('%-d %b')} – #{@list.end_date.strftime('%-d %b')}" %>
 
   <%= form_with(url: list_meals_path(@list), method: :patch, local: true, class: "meals-form") do |form| %>
-    <% 7.times do |n| %>
-      <% date = @list.date + n.days %>
+    <% @list.date_range.each do |date| %>
       <% meal = @list.meal_for_date(date) %>
       <div class="meal-day-row">
         <label class="meal-day-label" for="meal_<%= date %>">

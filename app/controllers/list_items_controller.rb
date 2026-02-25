@@ -60,5 +60,4 @@ class ListItemsController < ApplicationController
   def set_list_item
     @list_item = @list.list_items.find(params[:id])
   end
-
 end

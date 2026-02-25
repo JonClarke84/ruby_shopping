@@ -1,6 +1,6 @@
 <% if @list %>
   <% content_for :title, "Shopping List" %>
-  <% content_for :list_subtitle, @list.date.strftime('%A %d %B') %>
+  <% content_for :list_subtitle, "#{@list.date.strftime('%-d %b')} – #{@list.end_date.strftime('%-d %b')}" %>
 
   <% content_for :fab_and_sheet do %>
     <div data-controller="add-item-sheet">

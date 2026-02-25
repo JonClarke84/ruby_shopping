@@ -29,5 +29,4 @@ class MealsController < ApplicationController
   def set_list
     @list = current_group.lists.find(params[:list_id])
   end
-
 end

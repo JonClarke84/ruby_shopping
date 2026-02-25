@@ -15,7 +15,7 @@
       <% is_active = current_list&.id == list.id %>
       <%= button_to select_list_path(list), method: :patch, class: "list-card #{'list-card-active' if is_active}" do %>
         <div class="list-card-content">
-          <span class="list-card-date"><%= list.date.strftime('%A %d %B') %></span>
+          <span class="list-card-date"><%= list.date.strftime('%-d %b') %> – <%= list.end_date.strftime('%-d %b %Y') %></span>
           <span class="list-card-meta font-mono">
             <%= list.list_items.where(ticked: false).count %> items
             <% ticked = list.list_items.where(ticked: true).count %>
