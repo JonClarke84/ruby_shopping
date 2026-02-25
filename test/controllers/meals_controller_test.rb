@@ -11,6 +11,6 @@ class MealsControllerTest < ActionDispatch::IntegrationTest
       patch list_meals_url(@list), params: { meals: { "2025-10-27" => "Test Meal" } }
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to meals_tab_path
   end
 end

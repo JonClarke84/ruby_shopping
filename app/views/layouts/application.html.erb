@@ -34,18 +34,11 @@
         </div>
         <div class="top-header-center">
           <h1 class="top-header-title"><%= page_title %></h1>
-        </div>
-        <div class="top-header-right">
-          <% if controller_name == "lists" && action_name == "index" %>
-            <a href="#" class="header-action-btn" id="fab-trigger-header" aria-label="Add item" onclick="document.querySelector('[data-controller=&quot;add-item-sheet&quot;] .fab')?.click(); return false;">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </a>
-          <% elsif controller_name == "lists" && action_name != "index" %>
-            <%= link_to new_list_path, class: "header-action-btn", aria: { label: "New list" } do %>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            <% end %>
+          <% if content_for?(:list_subtitle) %>
+            <span class="top-header-subtitle"><%= yield :list_subtitle %></span>
           <% end %>
         </div>
+        <div class="top-header-right"></div>
       </header>
     <% end %>
 
@@ -71,7 +64,7 @@
           <span class="tab-label">List</span>
         <% end %>
 
-        <%= link_to root_path(anchor: "list-meals"), class: "tab-item #{active_tab == :meals ? 'tab-active' : ''}" do %>
+        <%= link_to meals_tab_path, class: "tab-item #{active_tab == :meals ? 'tab-active' : ''}" do %>
           <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>
             <path d="M7 2v20"/>

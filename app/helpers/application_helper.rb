@@ -2,7 +2,7 @@ module ApplicationHelper
   def active_tab
     case controller_name
     when "lists"
-      action_name == "index" ? :list : :list
+      action_name == "meals" ? :meals : :list
     when "items"
       :items
     when "groups", "sessions", "group_invitations", "users", "passwords"
@@ -17,6 +17,7 @@ module ApplicationHelper
     when "lists"
       case action_name
       when "index" then "Shopping List"
+      when "meals" then "Meals"
       when "all" then "All Lists"
       when "new" then "New List"
       when "show" then "List Details"

@@ -68,5 +68,7 @@ Rails.application.routes.draw do
   #
   # delete "/items/:id", to: "items#destroy"
 
+  get "meals" => "lists#meals", as: :meals_tab
+
   root "lists#index"
 end

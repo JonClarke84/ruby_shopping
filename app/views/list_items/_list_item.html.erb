@@ -4,61 +4,69 @@
      data-list-id="<%= list_item.list_id %>"
      data-list-items-target="item"
      data-controller="list-item-edit">
-  <div class="drag-handle" title="Drag to reorder">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-      <rect y="5" width="24" height="3" rx="1.5"/>
-      <rect y="11" width="24" height="3" rx="1.5"/>
-      <rect y="17" width="24" height="3" rx="1.5"/>
-    </svg>
-  </div>
-  <div class="list-item-row-main">
-    <label class="custom-checkbox">
-      <%= check_box_tag "ticked_#{list_item.id}", "1", list_item.ticked,
-          class: "custom-checkbox-input",
-          data: {
-            action: "change->list-items#toggle",
-            list_item_id: list_item.id,
-            list_id: list_item.list_id
-          } %>
-      <span class="custom-checkbox-circle">
-        <svg class="custom-checkbox-check" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="2.5 7 5.5 10 11.5 4"/>
+  <div class="swipe-container" data-list-item-edit-target="swipeContainer">
+    <div class="swipe-actions-behind">
+      <button type="button" class="swipe-action swipe-action-edit" data-action="click->list-item-edit#edit" data-list-item-edit-target="editButton" aria-label="Edit quantity">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 3H3.5A1.5 1.5 0 0 0 2 4.5v10A1.5 1.5 0 0 0 3.5 16h10a1.5 1.5 0 0 0 1.5-1.5V9"/>
+          <path d="M13.5 2.5a1.5 1.5 0 1 1 2.121 2.121L9 11.243 6.5 12l.757-2.5z"/>
         </svg>
-      </span>
-    </label>
-    <div class="list-item-row-text">
-      <span class="list-item-name"><%= list_item.item.name %></span>
-      <span class="list-item-quantity-display font-mono" data-list-item-edit-target="display">
-        &times;<%= list_item.quantity %>
-      </span>
-      <span class="list-item-quantity-edit" data-list-item-edit-target="form" style="display: none;">
-        &times;
-        <%= text_field_tag "quantity_#{list_item.id}", list_item.quantity,
-            type: "number",
-            min: 1,
-            class: "quantity-input",
-            data: {
-              list_item_edit_target: "input",
-              action: "blur->list-item-edit#save keydown->list-item-edit#handleKeydown"
-            } %>
-      </span>
+        <span>Edit</span>
+      </button>
+      <%= button_to list_list_item_path(list_item.list_id, list_item), method: :delete, class: "swipe-action swipe-action-delete", form: { data: { turbo_confirm: "Remove this item?" } } do %>
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2.5 4.5h13"/>
+          <path d="M6 4.5V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1.5"/>
+          <path d="M13.5 4.5V15a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 15V4.5"/>
+          <line x1="7.5" y1="7.5" x2="7.5" y2="13"/>
+          <line x1="10.5" y1="7.5" x2="10.5" y2="13"/>
+        </svg>
+        <span>Delete</span>
+      <% end %>
     </div>
-    <button type="button" class="kebab-btn" data-action="click->list-item-edit#toggleActions" aria-label="More actions">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-        <circle cx="10" cy="4" r="1.5"/>
-        <circle cx="10" cy="10" r="1.5"/>
-        <circle cx="10" cy="16" r="1.5"/>
-      </svg>
-    </button>
-  </div>
-  <div class="list-item-actions-row" data-list-item-edit-target="actionsRow" style="display: none;">
-    <%= button_tag "Edit",
-        type: "button",
-        class: "button-small",
-        data: {
-          action: "click->list-item-edit#edit",
-          list_item_edit_target: "editButton"
-        } %>
-    <%= button_to "Remove", list_list_item_path(list_item.list_id, list_item), method: :delete, class: "button-small button-danger", form: { data: { turbo_confirm: "Remove this item from the list?" } } %>
+    <div class="swipe-content" data-list-item-edit-target="swipeContent"
+         data-action="touchstart->list-item-edit#onTouchStart touchmove->list-item-edit#onTouchMove touchend->list-item-edit#onTouchEnd">
+      <label class="custom-checkbox">
+        <%= check_box_tag "ticked_#{list_item.id}", "1", list_item.ticked,
+            class: "custom-checkbox-input",
+            data: {
+              action: "change->list-items#toggle",
+              list_item_id: list_item.id,
+              list_id: list_item.list_id
+            } %>
+        <span class="custom-checkbox-circle">
+          <svg class="custom-checkbox-check" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="2.5 7 5.5 10 11.5 4"/>
+          </svg>
+        </span>
+      </label>
+      <div class="list-item-row-text">
+        <span class="list-item-name"><%= list_item.item.name %></span>
+        <span class="list-item-quantity-badge font-mono" data-list-item-edit-target="display" data-action="click->list-item-edit#edit">
+          &times;<%= list_item.quantity %>
+        </span>
+        <span class="list-item-quantity-edit" data-list-item-edit-target="form" style="display: none;">
+          &times;
+          <%= text_field_tag "quantity_#{list_item.id}", list_item.quantity,
+              type: "number",
+              min: 1,
+              class: "quantity-input",
+              data: {
+                list_item_edit_target: "input",
+                action: "blur->list-item-edit#save keydown->list-item-edit#handleKeydown"
+              } %>
+        </span>
+      </div>
+      <div class="drag-handle" title="Drag to reorder">
+        <svg width="10" height="18" viewBox="0 0 10 18" fill="currentColor">
+          <circle cx="2.5" cy="2.5" r="1.5"/>
+          <circle cx="7.5" cy="2.5" r="1.5"/>
+          <circle cx="2.5" cy="9" r="1.5"/>
+          <circle cx="7.5" cy="9" r="1.5"/>
+          <circle cx="2.5" cy="15.5" r="1.5"/>
+          <circle cx="7.5" cy="15.5" r="1.5"/>
+        </svg>
+      </div>
+    </div>
   </div>
 </div>
