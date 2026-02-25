@@ -30,7 +30,4 @@ class MealsController < ApplicationController
     @list = current_group.lists.find(params[:list_id])
   end
 
-  def current_group
-    Current.session&.selected_group || Group.find_by(name: "Test Group") || Group.first
-  end
 end

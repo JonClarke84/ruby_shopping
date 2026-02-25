@@ -5,8 +5,13 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     @list = lists(:one)
   end
 
-  test "should get index" do
-    get lists_url
+  test "should get home" do
+    get root_url
+    assert_response :success
+  end
+
+  test "should get show_current" do
+    get current_list_tab_url
     assert_response :success
   end
 
@@ -20,7 +25,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
       post lists_url, params: { list: { date: @list.date } }
     end
 
-    assert_redirected_to root_url
+    assert_redirected_to current_list_tab_url
   end
 
   test "should show list" do
@@ -38,6 +43,6 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
       delete list_url(@list)
     end
 
-    assert_redirected_to lists_url
+    assert_redirected_to root_url
   end
 end

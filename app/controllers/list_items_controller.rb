@@ -21,7 +21,7 @@ class ListItemsController < ApplicationController
     @list_item.destroy
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to root_path, notice: "Item removed from list" }
+      format.html { redirect_to current_list_tab_path, notice: "Item removed from list" }
     end
   end
 
@@ -53,7 +53,7 @@ class ListItemsController < ApplicationController
 
   def authorize_list
     unless @list && @list.group_id == current_group.id
-      redirect_to root_path, alert: "You don't have access to that list"
+      redirect_to current_list_tab_path, alert: "You don't have access to that list"
     end
   end
 
@@ -61,7 +61,4 @@ class ListItemsController < ApplicationController
     @list_item = @list.list_items.find(params[:id])
   end
 
-  def current_group
-    Current.session&.selected_group || Group.find_by(name: "Test Group") || Group.first
-  end
 end

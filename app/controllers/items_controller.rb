@@ -34,7 +34,7 @@ class ItemsController < ApplicationController
     if item_params[:name].blank?
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.update("new_item", partial: "items/form_with_error", locals: { list: @list, item: Item.new, error: "Item name cannot be blank" }) }
-        format.html { redirect_to root_path, alert: "Item name cannot be blank" }
+        format.html { redirect_to current_list_tab_path, alert: "Item name cannot be blank" }
       end
       return
     end
@@ -46,13 +46,13 @@ class ItemsController < ApplicationController
     if @list.list_items.exists?(item_id: @item.id)
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.update("new_item", partial: "items/form_with_error", locals: { list: @list, item: Item.new, error: "#{@item.name} is already on this list" }) }
-        format.html { redirect_to root_path, alert: "#{@item.name} is already on this list" }
+        format.html { redirect_to current_list_tab_path, alert: "#{@item.name} is already on this list" }
       end
     else
       @list_item = @list.list_items.create(item: @item, quantity: item_params[:quantity])
       respond_to do |format|
         format.turbo_stream
-        format.html { redirect_to root_path }
+        format.html { redirect_to current_list_tab_path }
       end
     end
   end
@@ -86,7 +86,4 @@ class ItemsController < ApplicationController
     params.require(:item).permit(:name, :quantity)
   end
 
-  def current_group
-    Current.session&.selected_group || Group.find_by(name: "Test Group") || Group.first
-  end
 end

@@ -1,0 +1,45 @@
+<% content_for :title, "Home" %>
+
+<div class="home-header">
+  <%= link_to new_list_path, class: "new-list-btn" do %>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+    New List
+  <% end %>
+</div>
+
+<% if @lists.any? %>
+  <div class="lists-list">
+    <% @lists.each do |list| %>
+      <% is_active = current_list&.id == list.id %>
+      <%= button_to select_list_path(list), method: :patch, class: "list-card #{'list-card-active' if is_active}" do %>
+        <div class="list-card-content">
+          <span class="list-card-date"><%= list.date.strftime('%A %d %B') %></span>
+          <span class="list-card-meta font-mono">
+            <%= list.list_items.where(ticked: false).count %> items
+            <% ticked = list.list_items.where(ticked: true).count %>
+            <% if ticked > 0 %>
+              &middot; <%= ticked %> done
+            <% end %>
+          </span>
+        </div>
+        <% if is_active %>
+          <span class="list-card-active-badge">Current</span>
+        <% end %>
+        <svg class="list-card-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 4 10 8 6 12"/>
+        </svg>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+      <rect x="9" y="3" width="6" height="4" rx="1"/>
+    </svg>
+    <p style="margin-top: var(--space-md); color: var(--color-text-muted);">No lists yet for this group</p>
+    <%= link_to "Create your first list", new_list_path, class: "button", style: "margin-top: var(--space-md);" %>
+  </div>
+<% end %>

@@ -68,7 +68,9 @@ Rails.application.routes.draw do
   #
   # delete "/items/:id", to: "items#destroy"
 
+  get "list" => "lists#show_current", as: :current_list_tab
   get "meals" => "lists#meals", as: :meals_tab
+  patch "select_list/:id" => "lists#select", as: :select_list
 
-  root "lists#index"
+  root "lists#home"
 end

@@ -58,7 +58,7 @@ class ListItemsControllerTest < ActionDispatch::IntegrationTest
       delete list_list_item_url(@list, @list_item)
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to current_list_tab_path
   end
 
   test "should not allow access to list items from different group" do
@@ -70,7 +70,7 @@ class ListItemsControllerTest < ActionDispatch::IntegrationTest
 
     # Try to toggle the list item from a different group
     patch toggle_list_list_item_url(different_list, different_list_item), params: { ticked: true }, as: :json
-    assert_redirected_to root_path
+    assert_redirected_to current_list_tab_path
     assert_equal "You don't have access to that list", flash[:alert]
   end
 
@@ -83,7 +83,7 @@ class ListItemsControllerTest < ActionDispatch::IntegrationTest
 
     # Try to update the list item from a different group
     patch list_list_item_url(different_list, different_list_item), params: { quantity: 5 }, as: :json
-    assert_redirected_to root_path
+    assert_redirected_to current_list_tab_path
     assert_equal "You don't have access to that list", flash[:alert]
   end
 
@@ -99,7 +99,7 @@ class ListItemsControllerTest < ActionDispatch::IntegrationTest
       delete list_list_item_url(different_list, different_list_item)
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to current_list_tab_path
     assert_equal "You don't have access to that list", flash[:alert]
   end
 end

@@ -3,15 +3,32 @@ class ListsController < ApplicationController
   before_action :authorize_list, only: %i[ show update destroy ]
   skip_before_action :require_authentication if Rails.env.test?
 
-  # GET /lists or /lists.json
-  def index
-    @list = current_group.lists.last
+  # GET / (Home tab - list of lists)
+  def home
+    @lists = current_group.lists.order(date: :desc)
+  end
+
+  # GET /list (List tab - view active list items)
+  def show_current
+    @list = current_list
     @item = Item.new
   end
 
-  # GET /meals
+  # GET /meals (Meals tab - view active list meals)
   def meals
-    @list = current_group.lists.last
+    @list = current_list
+  end
+
+  # PATCH /select_list/:id (switch active list)
+  def select
+    list = current_group.lists.find(params[:id])
+    Current.session&.update(selected_list: list)
+    redirect_to current_list_tab_path
+  end
+
+  # Legacy index - redirect to home
+  def index
+    redirect_to root_path
   end
 
   # GET /lists/all
@@ -19,7 +36,7 @@ class ListsController < ApplicationController
     @lists = current_group.lists.order(date: :desc)
   end
 
-  # GET /lists/1 or /lists/1.json
+  # GET /lists/1
   def show
   end
 
@@ -28,15 +45,19 @@ class ListsController < ApplicationController
     @list = List.new(date: Date.today)
   end
 
-  # POST /lists or /lists.json
+  # POST /lists
   def create
     @list = List.new(list_params)
     @list.group_id = current_group.id
 
-    redirect_to root_path if @list.save
+    if @list.save
+      # Auto-select the newly created list
+      Current.session&.update(selected_list: @list)
+      redirect_to current_list_tab_path
+    end
   end
 
-  # PATCH/PUT /lists/1 or /lists/1.json
+  # PATCH/PUT /lists/1
   def update
     respond_to do |format|
       if @list.update(list_params)
@@ -49,34 +70,29 @@ class ListsController < ApplicationController
     end
   end
 
-  # DELETE /lists/1 or /lists/1.json
+  # DELETE /lists/1
   def destroy
     @list.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to lists_path, notice: "List was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
+    # Clear selection if the deleted list was selected
+    if Current.session&.selected_list_id == @list.id
+      Current.session&.update(selected_list_id: nil)
     end
+    redirect_to root_path, notice: "List was successfully deleted.", status: :see_other
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_list
-      @list = List.find(params.expect(:id))
-    end
 
-    def authorize_list
-      unless @list && @list.group_id == current_group.id
-        redirect_to root_path, alert: "You don't have access to that list"
-      end
-    end
+  def set_list
+    @list = List.find(params.expect(:id))
+  end
 
-    # Only allow a list of trusted parameters through.
-    def list_params
-      params.expect(list: [ :date ])
+  def authorize_list
+    unless @list && @list.group_id == current_group.id
+      redirect_to root_path, alert: "You don't have access to that list"
     end
+  end
 
-    def current_group
-      Current.session&.selected_group || Group.find_by(name: "Test Group") || Group.first
-    end
+  def list_params
+    params.expect(list: [ :date ])
+  end
 end

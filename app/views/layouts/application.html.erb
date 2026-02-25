@@ -54,7 +54,15 @@
       <%= yield :fab_and_sheet %>
 
       <nav class="bottom-tab-bar" aria-label="Main navigation">
-        <%= link_to root_path, class: "tab-item #{active_tab == :list ? 'tab-active' : ''}" do %>
+        <%= link_to root_path, class: "tab-item #{active_tab == :home ? 'tab-active' : ''}" do %>
+          <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12l9-9 9 9"/>
+            <path d="M5 10v10a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1V10"/>
+          </svg>
+          <span class="tab-label">Home</span>
+        <% end %>
+
+        <%= link_to current_list_tab_path, class: "tab-item #{active_tab == :list ? 'tab-active' : ''}" do %>
           <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
             <rect x="9" y="3" width="6" height="4" rx="1"/>
@@ -71,16 +79,6 @@
             <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>
           </svg>
           <span class="tab-label">Meals</span>
-        <% end %>
-
-        <%= link_to items_path, class: "tab-item #{active_tab == :items ? 'tab-active' : ''}" do %>
-          <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7" rx="1"/>
-            <rect x="14" y="3" width="7" height="7" rx="1"/>
-            <rect x="3" y="14" width="7" height="7" rx="1"/>
-            <rect x="14" y="14" width="7" height="7" rx="1"/>
-          </svg>
-          <span class="tab-label">Items</span>
         <% end %>
 
         <%= link_to groups_path, class: "tab-item #{active_tab == :account ? 'tab-active' : ''}" do %>

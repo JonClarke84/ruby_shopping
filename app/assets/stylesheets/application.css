@@ -907,6 +907,91 @@ input[type="datetime-local"] {
   color: var(--color-text-muted);
 }
 
+/* ===== Home Tab (List of Lists) ===== */
+.home-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-md);
+}
+
+.new-list-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-primary);
+  color: white;
+  border-radius: var(--border-radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.lists-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--color-border);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+}
+
+.list-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-bg-medium);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-family);
+  width: 100%;
+  transition: background var(--transition-fast);
+}
+
+.list-card:active {
+  background: var(--color-bg-light);
+}
+
+.list-card-active {
+  border-left: 3px solid var(--color-primary);
+}
+
+.list-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.list-card-date {
+  display: block;
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.list-card-meta {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.list-card-active-badge {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-primary);
+  padding: 2px 8px;
+  background: var(--color-primary-light);
+  border-radius: var(--border-radius-full);
+  flex-shrink: 0;
+}
+
+.list-card-chevron {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
 /* ===== Meals Tab ===== */
 .meals-form {
   display: flex;
