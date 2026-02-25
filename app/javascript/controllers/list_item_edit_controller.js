@@ -1,11 +1,22 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["display", "form", "input", "editButton"]
+  static targets = ["display", "form", "input", "editButton", "actionsRow"]
 
   connect() {
     this.listItemId = this.element.dataset.listItemId
     this.originalValue = this.inputTarget.value
+  }
+
+  toggleActions() {
+    if (this.hasActionsRowTarget) {
+      const row = this.actionsRowTarget
+      if (row.style.display === 'none') {
+        row.style.display = 'flex'
+      } else {
+        row.style.display = 'none'
+      }
+    }
   }
 
   edit() {
@@ -37,7 +48,7 @@ export default class extends Controller {
     }
 
     // Update the display
-    this.displayTarget.textContent = `× ${newQuantity}`
+    this.displayTarget.textContent = `\u00d7${newQuantity}`
     this.originalValue = newQuantity
 
     // Send to server
@@ -54,7 +65,7 @@ export default class extends Controller {
       console.error('Error updating quantity:', error)
       alert('Unable to update quantity. Please try again.')
       // Revert the display
-      this.displayTarget.textContent = `× ${this.originalValue}`
+      this.displayTarget.textContent = `\u00d7${this.originalValue}`
       this.inputTarget.value = this.originalValue
     })
 
@@ -74,7 +85,6 @@ export default class extends Controller {
   }
 
   getListId() {
-    const listItems = this.element.closest('[data-controller="list-items"]')
-    return listItems?.dataset.listId
+    return this.element.dataset.listId
   }
 }

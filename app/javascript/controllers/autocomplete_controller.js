@@ -7,7 +7,11 @@ export default class extends Controller {
   connect() {
     this.debounceTimeout = null
     this.isLoading = false
-    this.hiddenField = document.getElementById('item_name_hidden')
+    // Find hidden field within the same form/container, or fall back to global ID
+    this.hiddenField = this.element.querySelector('input[type="hidden"][name*="[name]"]') ||
+                       this.element.querySelector('input[id$="_name_hidden"]') ||
+                       document.getElementById('item_name_hidden') ||
+                       document.getElementById('sheet_item_name_hidden')
   }
 
   disconnect() {
@@ -29,8 +33,8 @@ export default class extends Controller {
       clearTimeout(this.debounceTimeout)
     }
 
-    // Hide results if less than 3 characters
-    if (query.length < 3) {
+    // Hide results if less than 2 characters
+    if (query.length < 2) {
       this.hideResults()
       return
     }
@@ -38,10 +42,10 @@ export default class extends Controller {
     // Show loading state
     this.showLoading()
 
-    // Debounce by 500ms
+    // Debounce by 200ms
     this.debounceTimeout = setTimeout(() => {
       this.performSearch(query)
-    }, 500)
+    }, 200)
   }
 
   async performSearch(query) {

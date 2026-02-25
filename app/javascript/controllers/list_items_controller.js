@@ -32,7 +32,7 @@ export default class extends Controller {
 
       // Element configuration
       handle: '.drag-handle',
-      draggable: '.list-item-card',
+      draggable: '.list-item-row',
       filter: 'button, input, a',
       preventOnFilter: false,
 
@@ -85,7 +85,7 @@ export default class extends Controller {
     })
     .then(response => response.json())
     .then(data => {
-      const card = checkbox.closest('.list-item-card')
+      const card = checkbox.closest('.list-item-row')
       if (ticked) {
         card.classList.add('list-item-ticked')
       } else {

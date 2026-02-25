@@ -1,47 +1,57 @@
 <div id="<%= dom_id(list_item) %>"
-     class="list-item-card <%= 'list-item-ticked' if list_item.ticked %>"
+     class="list-item-row <%= 'list-item-ticked' if list_item.ticked %>"
      data-list-item-id="<%= list_item.id %>"
      data-list-id="<%= list_item.list_id %>"
      data-list-items-target="item"
      data-controller="list-item-edit">
-  <div class="list-item-main">
-    <div class="drag-handle" title="Drag to reorder">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <rect y="5" width="24" height="3" rx="1.5"/>
-        <rect y="11" width="24" height="3" rx="1.5"/>
-        <rect y="17" width="24" height="3" rx="1.5"/>
-      </svg>
-    </div>
-    <div class="list-item-content">
-      <div class="list-item-name">
-        <%= list_item.item.name %>
-        <span class="list-item-quantity-display" data-list-item-edit-target="display">
-          × <%= list_item.quantity %>
-        </span>
-        <span class="list-item-quantity-edit" data-list-item-edit-target="form" style="display: none;">
-          ×
-          <%= text_field_tag "quantity_#{list_item.id}", list_item.quantity,
-              type: "number",
-              min: 1,
-              class: "quantity-input",
-              data: {
-                list_item_edit_target: "input",
-                action: "blur->list-item-edit#save keydown->list-item-edit#handleKeydown"
-              } %>
-        </span>
-      </div>
-      <div class="list-item-checkbox">
-        <%= check_box_tag "ticked_#{list_item.id}", "1", list_item.ticked,
-            data: {
-              action: "change->list-items#toggle",
-              list_item_id: list_item.id,
-              list_id: list_item.list_id
-            } %>
-      </div>
-    </div>
+  <div class="drag-handle" title="Drag to reorder">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <rect y="5" width="24" height="3" rx="1.5"/>
+      <rect y="11" width="24" height="3" rx="1.5"/>
+      <rect y="17" width="24" height="3" rx="1.5"/>
+    </svg>
   </div>
-  <hr class="list-item-divider">
-  <div class="list-item-actions">
+  <div class="list-item-row-main">
+    <label class="custom-checkbox">
+      <%= check_box_tag "ticked_#{list_item.id}", "1", list_item.ticked,
+          class: "custom-checkbox-input",
+          data: {
+            action: "change->list-items#toggle",
+            list_item_id: list_item.id,
+            list_id: list_item.list_id
+          } %>
+      <span class="custom-checkbox-circle">
+        <svg class="custom-checkbox-check" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="2.5 7 5.5 10 11.5 4"/>
+        </svg>
+      </span>
+    </label>
+    <div class="list-item-row-text">
+      <span class="list-item-name"><%= list_item.item.name %></span>
+      <span class="list-item-quantity-display font-mono" data-list-item-edit-target="display">
+        &times;<%= list_item.quantity %>
+      </span>
+      <span class="list-item-quantity-edit" data-list-item-edit-target="form" style="display: none;">
+        &times;
+        <%= text_field_tag "quantity_#{list_item.id}", list_item.quantity,
+            type: "number",
+            min: 1,
+            class: "quantity-input",
+            data: {
+              list_item_edit_target: "input",
+              action: "blur->list-item-edit#save keydown->list-item-edit#handleKeydown"
+            } %>
+      </span>
+    </div>
+    <button type="button" class="kebab-btn" data-action="click->list-item-edit#toggleActions" aria-label="More actions">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+        <circle cx="10" cy="4" r="1.5"/>
+        <circle cx="10" cy="10" r="1.5"/>
+        <circle cx="10" cy="16" r="1.5"/>
+      </svg>
+    </button>
+  </div>
+  <div class="list-item-actions-row" data-list-item-edit-target="actionsRow" style="display: none;">
     <%= button_tag "Edit",
         type: "button",
         class: "button-small",

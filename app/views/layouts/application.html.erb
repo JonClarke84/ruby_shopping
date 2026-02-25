@@ -13,6 +13,10 @@
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
@@ -23,29 +27,28 @@
   </head>
 
   <body>
-    <nav>
-      <div>
-        <%= link_to "Home", root_path %>
-        <%= link_to "New list", new_list_path %>
-      </div>
-      <div>
-        <details>
-          <summary><%= Current.session&.selected_group&.name || "Menu" %></summary>
-          <ul class="dropdown-menu">
-            <li><%= link_to "Lists", all_lists_path %></li>
-            <li><%= link_to "Manage groups", groups_path %></li>
-            <li><%= link_to "Items", items_path %></li>
-            <% if authenticated? %>
-              <% invitation_count = Current.user.pending_invitations_count %>
-              <li>
-                <%= link_to "Invitations #{invitation_count > 0 ? "(#{invitation_count})" : ''}", group_invitations_path %>
-              </li>
+    <% if authenticated? %>
+      <header class="top-header">
+        <div class="top-header-left">
+          <span class="group-chip"><%= Current.session&.selected_group&.name || "Group" %></span>
+        </div>
+        <div class="top-header-center">
+          <h1 class="top-header-title"><%= page_title %></h1>
+        </div>
+        <div class="top-header-right">
+          <% if controller_name == "lists" && action_name == "index" %>
+            <a href="#" class="header-action-btn" id="fab-trigger-header" aria-label="Add item" onclick="document.querySelector('[data-controller=&quot;add-item-sheet&quot;] .fab')?.click(); return false;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </a>
+          <% elsif controller_name == "lists" && action_name != "index" %>
+            <%= link_to new_list_path, class: "header-action-btn", aria: { label: "New list" } do %>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             <% end %>
-            <li><%= button_to "Logout", session_path, method: :delete if authenticated? %></li>
-          </ul>
-        </details>
-      </div>
-    </nav>
+          <% end %>
+        </div>
+      </header>
+    <% end %>
+
     <% if notice.present? %>
       <div class="notice"><%= notice %></div>
     <% end %>
@@ -53,5 +56,48 @@
       <%= link_to "Login", new_session_path unless authenticated? %>
       <%= yield %>
     </main>
+
+    <% if authenticated? %>
+      <%= yield :fab_and_sheet %>
+
+      <nav class="bottom-tab-bar" aria-label="Main navigation">
+        <%= link_to root_path, class: "tab-item #{active_tab == :list ? 'tab-active' : ''}" do %>
+          <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+            <rect x="9" y="3" width="6" height="4" rx="1"/>
+            <line x1="9" y1="12" x2="15" y2="12"/>
+            <line x1="9" y1="16" x2="13" y2="16"/>
+          </svg>
+          <span class="tab-label">List</span>
+        <% end %>
+
+        <%= link_to root_path(anchor: "list-meals"), class: "tab-item #{active_tab == :meals ? 'tab-active' : ''}" do %>
+          <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>
+            <path d="M7 2v20"/>
+            <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>
+          </svg>
+          <span class="tab-label">Meals</span>
+        <% end %>
+
+        <%= link_to items_path, class: "tab-item #{active_tab == :items ? 'tab-active' : ''}" do %>
+          <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+          <span class="tab-label">Items</span>
+        <% end %>
+
+        <%= link_to groups_path, class: "tab-item #{active_tab == :account ? 'tab-active' : ''}" do %>
+          <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span class="tab-label">Account</span>
+        <% end %>
+      </nav>
+    <% end %>
   </body>
 </html>
