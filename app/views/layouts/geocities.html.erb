@@ -371,6 +371,39 @@
       overflow-x: auto;
     }
 
+    /* ===== MIDI PLAYER ===== */
+    .midi-player {
+      margin-top: 4px;
+    }
+    .midi-btn {
+      background: linear-gradient(180deg, #333366 0%, #111133 100%);
+      color: #00ff00;
+      border: 2px outset #666699;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      cursor: pointer;
+      letter-spacing: 1px;
+    }
+    .midi-btn:hover {
+      background: linear-gradient(180deg, #444477 0%, #222244 100%);
+      color: #88ff88;
+    }
+    .midi-btn:active {
+      border-style: inset;
+    }
+    .midi-btn.playing {
+      color: #ffff00;
+      border-color: #ffff00;
+    }
+    .midi-eq {
+      display: inline-block;
+      margin-left: 4px;
+      font-size: 10px;
+      color: #00ff00;
+      letter-spacing: 1px;
+    }
+
     /* ===== FOOTER ===== */
     .geo-footer {
       text-align: center;
@@ -401,5 +434,119 @@
   <div class="geocities-wrapper">
     <%= yield %>
   </div>
+
+  <script>
+    // ~*~ The Final Countdown MIDI Player ~*~
+    // Synthesized with Web Audio API for authentic retro vibes
+    window.MidiPlayer = {
+      ctx: null,
+      playing: false,
+      timeouts: [],
+
+      // The Final Countdown intro riff (note, duration in beats)
+      melody: [
+        // Bar 1: D C D ... G ...
+        ['D5',0.25],['C5',0.25],['D5',0.75],[null,0.25],['G4',1.5],[null,0.5],
+        // Bar 2: D C D ... Bb ...
+        ['D5',0.25],['C5',0.25],['D5',0.75],[null,0.25],['Bb4',1.5],[null,0.5],
+        // Bar 3: D C D ... G ... Bb A Bb A G
+        ['D5',0.25],['C5',0.25],['D5',0.75],[null,0.25],['G4',0.75],[null,0.25],
+        ['Bb4',0.25],['A4',0.25],['Bb4',0.25],['A4',0.25],['G4',1.0],[null,0.5],
+        // Bar 4: repeat bar 1
+        ['D5',0.25],['C5',0.25],['D5',0.75],[null,0.25],['G4',1.5],[null,0.5],
+        // Bar 5: repeat bar 2
+        ['D5',0.25],['C5',0.25],['D5',0.75],[null,0.25],['Bb4',1.5],[null,0.5],
+        // Bar 6: ending
+        ['D5',0.25],['C5',0.25],['D5',0.75],[null,0.25],['Eb5',0.5],['D5',0.5],['C5',0.5],['Bb4',0.5],['A4',1.5]
+      ],
+
+      noteFreq: {
+        'G4':392.00,'A4':440.00,'Bb4':466.16,'C5':523.25,'D5':587.33,'Eb5':622.25
+      },
+
+      playNote: function(freq, startTime, duration) {
+        // Sawtooth for that classic synth sound
+        var osc = this.ctx.createOscillator();
+        var gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.value = freq;
+
+        // Add slight detune for richness
+        var osc2 = this.ctx.createOscillator();
+        var gain2 = this.ctx.createGain();
+        osc2.type = 'sawtooth';
+        osc2.frequency.value = freq * 1.003;
+
+        gain.gain.setValueAtTime(0, startTime);
+        gain.gain.linearRampToValueAtTime(0.12, startTime + 0.02);
+        gain.gain.linearRampToValueAtTime(0.08, startTime + duration * 0.3);
+        gain.gain.linearRampToValueAtTime(0, startTime + duration * 0.95);
+
+        gain2.gain.setValueAtTime(0, startTime);
+        gain2.gain.linearRampToValueAtTime(0.08, startTime + 0.02);
+        gain2.gain.linearRampToValueAtTime(0.05, startTime + duration * 0.3);
+        gain2.gain.linearRampToValueAtTime(0, startTime + duration * 0.95);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc2.connect(gain2);
+        gain2.connect(this.ctx.destination);
+
+        osc.start(startTime);
+        osc.stop(startTime + duration);
+        osc2.start(startTime);
+        osc2.stop(startTime + duration);
+      },
+
+      toggle: function() {
+        if (this.playing) {
+          this.stop();
+        } else {
+          this.play();
+        }
+      },
+
+      play: function() {
+        this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        this.playing = true;
+
+        var btn = document.getElementById('midi-toggle');
+        if (btn) { btn.textContent = '[ STOP ]'; btn.classList.add('playing'); }
+        var eq = document.getElementById('midi-eq');
+        if (eq) { eq.style.display = 'inline-block'; }
+
+        var bpm = 160;
+        var beatLen = 60 / bpm;
+        var time = this.ctx.currentTime + 0.1;
+        var self = this;
+
+        this.melody.forEach(function(pair) {
+          var note = pair[0], dur = pair[1];
+          var durSec = dur * beatLen;
+          if (note && self.noteFreq[note]) {
+            self.playNote(self.noteFreq[note], time, durSec * 0.9);
+          }
+          time += durSec;
+        });
+
+        // Auto-stop after melody finishes
+        var totalBeats = this.melody.reduce(function(sum, p) { return sum + p[1]; }, 0);
+        var totalTime = totalBeats * beatLen * 1000 + 200;
+        this.timeouts.push(setTimeout(function() { self.stop(); }, totalTime));
+      },
+
+      stop: function() {
+        this.playing = false;
+        this.timeouts.forEach(clearTimeout);
+        this.timeouts = [];
+        if (this.ctx) { this.ctx.close(); this.ctx = null; }
+
+        var btn = document.getElementById('midi-toggle');
+        if (btn) { btn.textContent = '[ PLAY ]'; btn.classList.remove('playing'); }
+        var eq = document.getElementById('midi-eq');
+        if (eq) { eq.style.display = 'none'; }
+      }
+    };
+  </script>
 </body>
 </html>
