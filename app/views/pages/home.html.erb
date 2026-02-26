@@ -1,0 +1,134 @@
+<%# ~*~ JONATHAN'S GEOCITIES HOMEPAGE ~*~ %>
+<%# Best viewed in Netscape Navigator 4.0 at 800x600 %>
+
+<div class="construction-banner">
+  <div class="construction-banner-inner">
+    <span>&#9888;</span> UNDER CONSTRUCTION <span>&#9888;</span> UNDER CONSTRUCTION <span>&#9888;</span>
+  </div>
+</div>
+
+<div class="geo-header">
+  <div class="star-decoration">&#10026;</div>
+  <h1>~*~ Jonathan's Homepage ~*~</h1>
+  <div class="subtitle">&#10024; Welcome to my corner of the World Wide Web &#10024;</div>
+  <div class="star-decoration">&#10026;</div>
+</div>
+
+<hr class="rainbow-hr">
+
+<div class="marquee-container">
+  <div class="marquee-text">
+    &#9733; Welcome visitor! &#9733; This page has been online since 1997 &#9733; You are visitor number <%= number_with_delimiter(@visitor_count) %> &#9733; Last updated: February 26, 2026 &#9733; Best viewed at 800x600 &#9733; Sign my guestbook!! &#9733;
+  </div>
+</div>
+
+<hr class="rainbow-hr">
+
+<table class="geo-table">
+  <tr>
+    <td class="sidebar">
+
+      <p style="color: #ff8800; font-weight: bold; font-size: 14px;">&#128187; NAVIGATION</p>
+      <p><%= link_to "About Me", about_path %></p>
+      <p><%= link_to "Cool Links", links_path %></p>
+      <p><%= link_to "My Apps!", apps_path %></p>
+      <p><%= link_to "Guestbook", guestbook_path %></p>
+
+      <hr class="rainbow-hr">
+
+      <p style="color: #ff88ff; font-size: 12px;">Site Visitors:</p>
+      <div class="visitor-counter"><%= format("%06d", @visitor_count) %></div>
+
+      <hr class="rainbow-hr">
+
+      <%= link_to guestbook_path, class: "guestbook-link" do %>&#128221; Sign My<br>Guestbook!<% end %>
+
+      <hr class="rainbow-hr">
+
+      <p style="color: #ffff00; font-size: 11px;">&#127911; Now Playing:</p>
+      <p style="color: #aaaaff; font-size: 11px;"><em>finalcountdown.mid</em></p>
+
+    </td>
+    <td class="main-content">
+
+      <div id="about">
+        <p style="color: #ff8800; font-weight: bold; font-size: 18px;">&#128075; About Me</p>
+        <p>
+          Hi! My name is <span style="color: #ffff00; font-weight: bold;">Jonathan</span> and welcome to my
+          <span class="blink" style="color: #ff0000;">AWESOME</span> homepage!!!
+        </p>
+        <p>
+          I like <span style="color: #ff88ff;">Ruby on Rails</span>, making <span style="color: #88ffff;">shopping lists</span>,
+          and collecting <span style="color: #ffff88;">vintage web graphics</span>. This page has been hand-crafted
+          in <span style="color: #ff8888;">HTML</span> using only Notepad.exe!!
+        </p>
+      </div>
+
+      <hr class="rainbow-hr">
+
+      <div class="ascii-art">
+      _____________________
+     /                     \
+    |   &#9733; SHOP SMART &#9733;    |
+    |   &#9733; SHOP  S-MART &#9733;  |
+     \_____________________/
+            \   ^__^
+             \  (oo)\_______
+                (__)\       )\/\
+                    ||----w |
+                    ||     ||</div>
+
+      <hr class="rainbow-hr">
+
+      <div id="apps" style="text-align: center;">
+        <p style="color: #ff8800; font-weight: bold; font-size: 18px;">&#127856; My Web Apps</p>
+        <p style="color: #88ff88;">Check out my <span class="blink" style="color: #ffff00;">NEW</span> shopping list app!</p>
+        <p style="color: #cccccc; font-size: 13px;">Built with Ruby on Rails &bull; Powered by the Information Superhighway</p>
+        <br>
+        <a href="/shopping/" class="geo-button">&#128722; Enter Shopping List App &#128722;</a>
+        <br><br>
+        <p style="color: #888888; font-size: 11px;">(Requires login &mdash; it's FREE to sign up!!)</p>
+      </div>
+
+      <hr class="rainbow-hr">
+
+      <div id="links">
+        <p style="color: #ff8800; font-weight: bold; font-size: 18px;">&#127760; Cool Links</p>
+        <ul style="list-style-type: '&#9733; '; padding-left: 25px;">
+          <li><a href="https://rubyonrails.org">Ruby on Rails</a> - The best web framework!!</li>
+          <li><a href="https://www.ruby-lang.org">Ruby Language</a> - A programmer's best friend</li>
+          <li><a href="https://web.archive.org">The Wayback Machine</a> - Explore the old web!</li>
+          <li><a href="https://cameronsworld.net">Cameron's World</a> - GeoCities tribute</li>
+        </ul>
+      </div>
+
+    </td>
+  </tr>
+</table>
+
+<hr class="rainbow-hr">
+
+<div class="badge-row">
+  <span class="badge badge-nn">NETSCAPE NOW!</span>
+  <span class="badge badge-ie">BEST IN IE 4.0</span>
+  <span class="badge badge-html">MADE WITH HTML</span>
+  <span class="badge badge-noframes">NO FRAMES!</span>
+  <span class="badge badge-free">BUILT ON FREE SOFTWARE</span>
+  <span class="badge badge-ruby">POWERED BY RUBY</span>
+</div>
+
+<div class="webring">
+  &#127760; <strong>The Shopping List WebRing</strong> &#127760;<br>
+  <a href="#">&laquo; Prev</a> |
+  <a href="#">Random</a> |
+  <a href="#">Next &raquo;</a>
+</div>
+
+<div class="geo-footer">
+  <p class="email-bounce">
+    &#9993; <span>E</span><span>m</span><span>a</span><span>i</span><span>l</span> <span>m</span><span>e</span><span>!</span><span>!</span><span>!</span>
+  </p>
+  <p>&copy; 1997&ndash;<%= Date.today.year %> Jonathan's Homepage. All rights reserved.</p>
+  <p>This site is not affiliated with Yahoo! GeoCities.</p>
+  <p style="margin-top: 8px; color: #444466;">Made with &#10084;&#65039; and &lt;table&gt; tags</p>
+</div>

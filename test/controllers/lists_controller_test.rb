@@ -6,7 +6,7 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get home" do
-    get root_url
+    get shopping_home_url
     assert_response :success
   end
 
@@ -43,6 +43,6 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
       delete list_url(@list)
     end
 
-    assert_redirected_to root_url
+    assert_redirected_to shopping_home_url
   end
 end

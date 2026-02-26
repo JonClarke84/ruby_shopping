@@ -19,7 +19,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to shopping_home_path
     assert_equal "Welcome!", flash[:notice]
 
     # Check user was logged in

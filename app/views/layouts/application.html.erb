@@ -53,7 +53,7 @@
       <%= yield :fab_and_sheet %>
 
       <nav class="bottom-tab-bar" aria-label="Main navigation">
-        <%= link_to root_path, class: "tab-item #{active_tab == :home ? 'tab-active' : ''}" do %>
+        <%= link_to shopping_home_path, class: "tab-item #{active_tab == :home ? 'tab-active' : ''}" do %>
           <svg class="tab-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 12l9-9 9 9"/>
             <path d="M5 10v10a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1V10"/>

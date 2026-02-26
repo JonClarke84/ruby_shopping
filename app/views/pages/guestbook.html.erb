@@ -1,0 +1,98 @@
+<%# ~*~ GUESTBOOK ~*~ %>
+
+<div class="construction-banner">
+  <div class="construction-banner-inner">
+    <span>&#9888;</span> UNDER CONSTRUCTION <span>&#9888;</span> UNDER CONSTRUCTION <span>&#9888;</span>
+  </div>
+</div>
+
+<div class="geo-header">
+  <h1>&#128221; Guestbook &#128221;</h1>
+  <div class="subtitle">&#10024; Leave a message for Jonathan! &#10024;</div>
+</div>
+
+<hr class="rainbow-hr">
+
+<p style="text-align: center;"><%= link_to "&laquo; Back to Homepage".html_safe, root_path %></p>
+
+<hr class="rainbow-hr">
+
+<% if notice.present? %>
+  <div class="marquee-container">
+    <div class="marquee-text">
+      &#9733; <%= notice %> &#9733;
+    </div>
+  </div>
+  <hr class="rainbow-hr">
+<% end %>
+
+<table class="geo-table">
+  <tr>
+    <td class="main-content" style="width: 100%;">
+
+      <p style="color: #ff8800; font-weight: bold; font-size: 18px;">&#9999; Sign the Guestbook!</p>
+      <p style="color: #88ff88; font-size: 13px;">Let me know you were here! All fields are required.</p>
+
+      <%= form_with model: @entry, url: guestbook_path, method: :post do |f| %>
+        <% if @entry.errors.any? %>
+          <div style="background: #330000; border: 2px solid #ff0000; padding: 8px; margin-bottom: 10px;">
+            <p style="color: #ff4444; font-weight: bold; margin: 0 0 5px;">&#9888; Oops!</p>
+            <% @entry.errors.full_messages.each do |msg| %>
+              <p style="color: #ff8888; margin: 2px 0; font-size: 13px;">&bull; <%= msg %></p>
+            <% end %>
+          </div>
+        <% end %>
+
+        <div style="margin-bottom: 10px;">
+          <label for="guestbook_entry_name" style="color: #ffff00; font-size: 14px; display: block; margin-bottom: 4px;">
+            &#128100; Your Name:
+          </label>
+          <%= f.text_field :name,
+            id: "guestbook_entry_name",
+            style: "width: 100%; max-width: 400px; padding: 6px 10px; background: #000033; color: #00ff00; border: 2px inset #808080; font-family: 'Comic Sans MS', cursive; font-size: 14px;",
+            placeholder: "e.g. CoolSurfer99" %>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+          <label for="guestbook_entry_message" style="color: #ffff00; font-size: 14px; display: block; margin-bottom: 4px;">
+            &#128172; Your Message:
+          </label>
+          <%= f.text_area :message,
+            id: "guestbook_entry_message",
+            rows: 4,
+            style: "width: 100%; max-width: 400px; padding: 6px 10px; background: #000033; color: #00ff00; border: 2px inset #808080; font-family: 'Comic Sans MS', cursive; font-size: 14px; resize: vertical;",
+            placeholder: "Cool site dude!! Keep up the good work!" %>
+        </div>
+
+        <div>
+          <%= f.submit "Sign Guestbook!",
+            style: "background: linear-gradient(180deg, #6666ff 0%, #0000aa 100%); color: #ffffff; padding: 8px 25px; border: 3px outset #8888ff; font-family: 'Comic Sans MS', cursive; font-size: 14px; font-weight: bold; cursor: pointer;",
+            class: "geo-submit" %>
+        </div>
+      <% end %>
+
+      <hr class="rainbow-hr">
+
+      <p style="color: #ff8800; font-weight: bold; font-size: 18px;">&#128214; Previous Entries (<%= @entries.count %>)</p>
+
+      <% if @entries.empty? %>
+        <p style="color: #666699; font-style: italic;">No entries yet... be the first to sign!!</p>
+      <% end %>
+
+      <% @entries.each do |entry| %>
+        <div class="guestbook-entry" style="background: rgba(0, 0, 80, 0.5); border: 1px ridge #404080; padding: 10px; margin-bottom: 10px;">
+          <p style="margin: 0 0 5px;">
+            <span style="color: #ffff00; font-weight: bold;"><%= entry.name %></span>
+            <span style="color: #666699; font-size: 11px;">wrote on <%= entry.created_at.strftime("%B %d, %Y at %I:%M %p") %>:</span>
+          </p>
+          <p style="color: #88ff88; margin: 0; white-space: pre-wrap; word-break: break-word;"><%= entry.message %></p>
+        </div>
+      <% end %>
+
+    </td>
+  </tr>
+</table>
+
+<hr class="rainbow-hr">
+
+<p style="text-align: center;"><%= link_to "&laquo; Back to Homepage".html_safe, root_path %></p>

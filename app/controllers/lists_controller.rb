@@ -28,7 +28,7 @@ class ListsController < ApplicationController
 
   # Legacy index - redirect to home
   def index
-    redirect_to root_path
+    redirect_to shopping_home_path
   end
 
   # GET /lists/all
@@ -77,7 +77,7 @@ class ListsController < ApplicationController
     if Current.session&.selected_list_id == @list.id
       Current.session&.update(selected_list_id: nil)
     end
-    redirect_to root_path, notice: "List was successfully deleted.", status: :see_other
+    redirect_to shopping_home_path, notice: "List was successfully deleted.", status: :see_other
   end
 
   private
@@ -88,7 +88,7 @@ class ListsController < ApplicationController
 
   def authorize_list
     unless @list && @list.group_id == current_group.id
-      redirect_to root_path, alert: "You don't have access to that list"
+      redirect_to shopping_home_path, alert: "You don't have access to that list"
     end
   end
 

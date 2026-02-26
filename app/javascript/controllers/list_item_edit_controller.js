@@ -146,7 +146,7 @@ export default class extends Controller {
     this.originalValue = newQuantity
 
     // Send to server
-    fetch(`/lists/${this.getListId()}/list_items/${this.listItemId}`, {
+    fetch(`/shopping/lists/${this.getListId()}/list_items/${this.listItemId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

@@ -4,7 +4,7 @@ class UnsubscribesController < ApplicationController
 
   def show
     @subscriber&.destroy
-    redirect_to root_path, notice: "Unsubscribed successfully."
+    redirect_to shopping_home_path, notice: "Unsubscribed successfully."
   end
 
   private

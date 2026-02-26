@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_25_141257) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_26_143802) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -67,6 +67,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_25_141257) do
 
   create_table "groups", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "guestbook_entries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "message"
     t.string "name"
     t.datetime "updated_at", null: false
   end
@@ -128,6 +135,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_25_141257) do
     t.integer "user_id", null: false
     t.index ["selected_group_id"], name: "index_sessions_on_selected_group_id"
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "site_counters", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.integer "value", default: 0, null: false
+    t.index ["name"], name: "index_site_counters_on_name", unique: true
   end
 
   create_table "subscribers", force: :cascade do |t|

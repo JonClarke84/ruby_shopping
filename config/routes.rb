@@ -1,76 +1,66 @@
 Rails.application.routes.draw do
-  resources :users, only: [ :new, :create ]
-  resources :groups do
-    member do
-      get :invite
-      post :invite, action: :send_invite
-      delete :leave
-    end
-  end
-
-  resources :group_invitations, only: [ :index ] do
-    member do
-      post :accept
-      post :decline
-    end
-  end
-  resources :lists do
-    collection do
-      get :all
-    end
-    resources :meals, only: [ :create, :update, :destroy ]
-    patch :meals, to: "meals#update"
-
-    resources :items, only: [ :index, :new, :create ]
-    resources :list_items, only: [ :update, :destroy ] do
-      member do
-        patch :toggle
-        patch :reorder
-      end
-    end
-  end
-
-  resource :session
-  patch "/switch_group", to: "sessions#switch_group", as: :switch_group
-  resources :passwords, param: :token
-
-  resources :items do
-    collection do
-      get :search
-    end
-    resources :subscribers, only: [ :create ]
-  end
-
-  resource :unsubscribe, only: [ :show ]
-
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # Personal homepage (no auth required)
+  root "pages#home"
+  get "about", to: "pages#about"
+  get "links", to: "pages#links"
+  get "apps", to: "pages#apps"
+  get "guestbook", to: "pages#guestbook"
+  post "guestbook", to: "pages#sign_guestbook"
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  # All shopping routes live under /shopping/
+  scope "/shopping" do
+    resources :users, only: [ :new, :create ]
+    resources :groups do
+      member do
+        get :invite
+        post :invite, action: :send_invite
+        delete :leave
+      end
+    end
 
-  # Defines the root path route ("/")
-  # root "posts#index"
-  # get "/items", to: "items#index"
-  #
-  # get "/items/new", to: "items#new"
-  # post "/items", to: "items#create"
-  #
-  # get "/items/:id", to: "items#show"
-  #
-  # get "/items/:id/edit", to: "items#edit"
-  # patch "/items/:id", to: "items#update"
-  # put "/items/:id", to: "items#update"
-  #
-  # delete "/items/:id", to: "items#destroy"
+    resources :group_invitations, only: [ :index ] do
+      member do
+        post :accept
+        post :decline
+      end
+    end
+    resources :lists do
+      collection do
+        get :all
+      end
+      resources :meals, only: [ :create, :update, :destroy ]
+      patch :meals, to: "meals#update"
 
-  get "list" => "lists#show_current", as: :current_list_tab
-  get "meals" => "lists#meals", as: :meals_tab
-  patch "select_list/:id" => "lists#select", as: :select_list
+      resources :items, only: [ :index, :new, :create ]
+      resources :list_items, only: [ :update, :destroy ] do
+        member do
+          patch :toggle
+          patch :reorder
+        end
+      end
+    end
 
-  root "lists#home"
+    resource :session
+    patch "/switch_group", to: "sessions#switch_group", as: :switch_group
+    resources :passwords, param: :token
+
+    resources :items do
+      collection do
+        get :search
+      end
+      resources :subscribers, only: [ :create ]
+    end
+
+    resource :unsubscribe, only: [ :show ]
+
+    get "list" => "lists#show_current", as: :current_list_tab
+    get "meals" => "lists#meals", as: :meals_tab
+    patch "select_list/:id" => "lists#select", as: :select_list
+
+    get "/", to: "lists#home", as: :shopping_home
+  end
 end

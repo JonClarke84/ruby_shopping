@@ -75,7 +75,7 @@ export default class extends Controller {
     const listId = checkbox.dataset.listId
     const ticked = checkbox.checked
 
-    fetch(`/lists/${listId}/list_items/${listItemId}/toggle`, {
+    fetch(`/shopping/lists/${listId}/list_items/${listItemId}/toggle`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ export default class extends Controller {
     const nextId = nextItem ? nextItem.dataset.listItemId : null
 
     // Send reorder request
-    fetch(`/lists/${listId}/list_items/${listItemId}/reorder`, {
+    fetch(`/shopping/lists/${listId}/list_items/${listItemId}/reorder`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
