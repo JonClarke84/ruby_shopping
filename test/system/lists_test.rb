@@ -19,7 +19,13 @@ class ListsTest < ApplicationSystemTestCase
     fill_in "End date", with: 14.days.from_now.strftime("%Y-%m-%d")
     click_on "Create List"
 
-    assert_selector "#list-items-section"
+    begin
+      assert_selector "#list-items-section"
+    rescue Capybara::ElementNotFound => e
+      puts "DEBUG: Current path: #{current_path}"
+      puts "DEBUG: HTML: #{page.html}"
+      raise e
+    end
   end
 
   test "should destroy List" do
