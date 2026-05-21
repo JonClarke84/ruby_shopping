@@ -2,19 +2,21 @@
   <% content_for :title, "Meals" %>
   <% content_for :list_subtitle, "#{@list.date.strftime('%-d %b')} – #{@list.end_date.strftime('%-d %b')}" %>
 
-  <%= form_with(url: list_meals_path(@list), method: :patch, local: true, class: "meals-form") do |form| %>
-    <% @list.date_range.each do |date| %>
-      <% meal = @list.meal_for_date(date) %>
-      <div class="meal-day-row">
-        <label class="meal-day-label" for="meal_<%= date %>">
-          <span class="meal-day-name"><%= date.strftime('%A') %></span>
-          <span class="meal-day-date font-mono"><%= date.strftime('%-d %b') %></span>
-        </label>
-        <%= form.text_field "meals[#{date}]", value: meal&.name, id: "meal_#{date}", class: "meal-input", placeholder: "What's for dinner?" %>
-      </div>
+  <%= turbo_frame_tag "meals_list" do %>
+    <%= form_with(url: list_meals_path(@list), method: :patch, class: "meals-form") do |form| %>
+      <% @list.date_range.each do |date| %>
+        <% meal = @list.meal_for_date(date) %>
+        <div class="meal-day-row">
+          <label class="meal-day-label" for="meal_<%= date %>">
+            <span class="meal-day-name"><%= date.strftime('%A') %></span>
+            <span class="meal-day-date font-mono"><%= date.strftime('%-d %b') %></span>
+          </label>
+          <%= form.text_field "meals[#{date}]", value: meal&.name, id: "meal_#{date}", class: "meal-input", placeholder: "What's for dinner?" %>
+        </div>
+      <% end %>
+      <%= form.hidden_field "group_id", value: @list.group_id %>
+      <button type="submit" class="sheet-submit-btn mt-3">Save Meals</button>
     <% end %>
-    <%= form.hidden_field "group_id", value: @list.group_id %>
-    <button type="submit" class="sheet-submit-btn mt-3">Save Meals</button>
   <% end %>
 <% else %>
   <% content_for :title, "Meals" %>

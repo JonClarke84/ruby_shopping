@@ -2,6 +2,8 @@ require "test_helper"
 
 class ListsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @user = users(:one)
+    sign_in_as(@user)
     @list = lists(:one)
   end
 

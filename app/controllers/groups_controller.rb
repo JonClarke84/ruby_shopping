@@ -1,6 +1,5 @@
 class GroupsController < ApplicationController
-  before_action :set_group, only: %i[ show edit update destroy invite send_invite ]
-  skip_before_action :require_authentication if Rails.env.test?
+  before_action :set_group, only: %i[ show edit update destroy invite send_invite leave ]
 
   def index
     @groups = current_user.groups

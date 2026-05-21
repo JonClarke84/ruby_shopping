@@ -43,6 +43,11 @@
           </div>
         <% end %>
 
+        <div style="display: none;" aria-hidden="true">
+          <%= f.label :website, "Leave this field blank" %>
+          <%= f.text_field :website, tabindex: -1, autocomplete: "off" %>
+        </div>
+
         <div style="margin-bottom: 10px;">
           <label for="guestbook_entry_name" style="color: #ffff00; font-size: 14px; display: block; margin-bottom: 4px;">
             &#128100; Your Name:
