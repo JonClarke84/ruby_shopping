@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+Dir["#{__dir__}/*.gemspec"].each do |spec|
+  gemspec name: File.basename(spec, '.gemspec')
+end
+
+# ActiveSupport 8.x requires Ruby 3.2+ (dependency of Steep)
+gem 'activesupport', '~> 7.0', require: false, platforms: %i[mri mingw x64_mingw]
+gem 'curb', '~> 1.0.5', require: false, platforms: %i[mri mingw x64_mingw]
+gem 'debug', '~> 1.7', require: false, platforms: %i[mri mingw x64_mingw]
+gem 'steep', '~> 1.5.0', require: false, platforms: %i[mri mingw x64_mingw]
+
+# Prism staring with 1.5 fails to build with the following error:
+# src/prism.c:8651:62: error: conversion to ‘unsigned int’ from ‘int’ may change the sign of the result [-Werror=sign-conversion]
+gem 'prism', ['~> 1.0', '< 1.5']

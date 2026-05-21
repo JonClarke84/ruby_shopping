@@ -22,6 +22,11 @@ class PagesController < ApplicationController
   end
 
   def sign_guestbook
+    # Simple honeypot check
+    if params[:guestbook_entry][:website].present?
+      return redirect_to guestbook_path, notice: "Thanks for signing my guestbook!!"
+    end
+
     @entry = GuestbookEntry.new(guestbook_params)
 
     if @entry.save
@@ -33,6 +38,8 @@ class PagesController < ApplicationController
   end
 
   private
+
+  rate_limit to: 3, within: 1.minute, only: :sign_guestbook, with: -> { redirect_to guestbook_path, alert: "Slow down! You're signing the guestbook too fast." } unless Rails.env.test?
 
   def guestbook_params
     params.expect(guestbook_entry: [ :name, :message ])
