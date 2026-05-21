@@ -19,7 +19,7 @@ class MealsControllerTest < ActionDispatch::IntegrationTest
   test "should update existing meals" do
     date = "2025-10-27"
     patch list_meals_url(@list), params: { meals: { date => "Initial Meal" } }
-    
+
     assert_no_difference("ListMeal.count") do
       patch list_meals_url(@list), params: { meals: { date => "Updated Meal" } }
     end
