@@ -17,7 +17,10 @@ class MealsController < ApplicationController
       end
     end
 
-    redirect_to meals_tab_path, notice: "Meals updated successfully"
+    respond_to do |format|
+      format.html { redirect_to meals_tab_path, notice: "Meals updated successfully" }
+      format.turbo_stream { redirect_to meals_tab_path, notice: "Meals updated successfully" }
+    end
   end
 
   def destroy

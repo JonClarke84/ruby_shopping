@@ -2,6 +2,9 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 
+# Speed up tests by lowering BCrypt cost
+BCrypt::Engine.cost = BCrypt::Engine::MIN_COST
+
 module ActiveSupport
   class TestCase
     # Run tests in parallel with specified workers

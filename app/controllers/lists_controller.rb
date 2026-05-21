@@ -53,6 +53,8 @@ class ListsController < ApplicationController
       # Auto-select the newly created list
       Current.session&.update(selected_list: @list)
       redirect_to current_list_tab_path
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -71,14 +73,14 @@ class ListsController < ApplicationController
 
   # DELETE /lists/1
   def destroy
-    @list.destroy!
     # Clear selection if the deleted list was selected
     if Current.session&.selected_list_id == @list.id
       Current.session&.update(selected_list_id: nil)
     end
+
+    @list.destroy
     redirect_to shopping_home_path, notice: "List was successfully deleted.", status: :see_other
   end
-
   private
 
   def set_list

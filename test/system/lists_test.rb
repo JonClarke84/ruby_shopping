@@ -15,8 +15,8 @@ class ListsTest < ApplicationSystemTestCase
   test "should create list" do
     visit new_list_url
 
-    fill_in "Start date", with: 7.days.from_now.to_date
-    fill_in "End date", with: 14.days.from_now.to_date
+    fill_in "Start date", with: 7.days.from_now.strftime("%Y-%m-%d")
+    fill_in "End date", with: 14.days.from_now.strftime("%Y-%m-%d")
     click_on "Create List"
 
     assert_selector "#list-items-section"
