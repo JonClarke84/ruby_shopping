@@ -12,9 +12,9 @@ class MealsController < ApplicationController
       else
         # Find or create the meal, then find or create the ListMeal
         meal = Meal.find_or_create_by(name: meal_name, group_id: @list.group_id)
-        ListMeal.find_or_create_by(list: @list, date: date) do |lm|
-          lm.meal = meal
-        end
+        list_meal = ListMeal.find_or_initialize_by(list: @list, date: date)
+        list_meal.meal = meal
+        list_meal.save!
       end
     end
 
