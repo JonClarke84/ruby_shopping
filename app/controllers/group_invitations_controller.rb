@@ -1,6 +1,5 @@
 class GroupInvitationsController < ApplicationController
   before_action :set_invitation, only: [ :accept, :decline ]
-  skip_before_action :require_authentication if Rails.env.test?
 
   def index
     @invitations = current_user.group_invitations.pending_and_not_expired.includes(:group, :invited_by)

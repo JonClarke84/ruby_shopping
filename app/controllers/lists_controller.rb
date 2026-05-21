@@ -1,7 +1,6 @@
 class ListsController < ApplicationController
   before_action :set_list, only: %i[ show update destroy ]
   before_action :authorize_list, only: %i[ show update destroy ]
-  skip_before_action :require_authentication if Rails.env.test?
 
   # GET / (Home tab - list of lists)
   def home

@@ -2,6 +2,8 @@ require "test_helper"
 
 class MealsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @user = users(:one)
+    sign_in_as(@user)
     @list = lists(:one)
     @meal = meals(:one)
   end

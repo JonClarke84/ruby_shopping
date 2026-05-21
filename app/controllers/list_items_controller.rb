@@ -2,7 +2,6 @@ class ListItemsController < ApplicationController
   before_action :set_list
   before_action :authorize_list
   before_action :set_list_item
-  skip_before_action :require_authentication if Rails.env.test?
 
   def toggle
     @list_item.update(ticked: params[:ticked])

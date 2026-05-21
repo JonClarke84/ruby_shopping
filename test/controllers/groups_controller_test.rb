@@ -2,6 +2,8 @@ require "test_helper"
 
 class GroupsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @user = users(:one)
+    sign_in_as(@user)
     @group = groups(:one)
   end
 

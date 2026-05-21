@@ -11,10 +11,13 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
+  end
+end
 
-    # Set Current.session for tests (Current.user is delegated from session)
-    setup do
-      Current.session = sessions(:one)
+module ActionDispatch
+  class IntegrationTest
+    def sign_in_as(user, password: "password")
+      post session_url, params: { email_address: user.email_address, password: password }
     end
   end
 end
