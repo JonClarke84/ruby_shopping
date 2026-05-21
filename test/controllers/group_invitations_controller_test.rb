@@ -4,7 +4,7 @@ class GroupInvitationsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @current_user = users(:one)
     @other_user = users(:two)
-    Current.session = sessions(:one)  # This session belongs to users(:one)
+    sign_in_as(@current_user)
   end
 
   test "should get index" do
