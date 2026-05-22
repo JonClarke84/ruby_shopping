@@ -25,8 +25,11 @@ class ListsTest < ApplicationSystemTestCase
   test "should destroy List" do
     visit list_url(@list)
 
+    # Wait for Turbo and page to be fully ready
+    sleep 0.5
+
     accept_confirm do
-      click_on "Delete List", match: :first
+      click_button "Delete List"
     end
 
     assert_text "List was successfully deleted."
