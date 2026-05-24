@@ -26,7 +26,8 @@ class ListsTest < ApplicationSystemTestCase
     visit list_url(@list)
 
     # Wait for Turbo and page to be fully ready
-    sleep 0.5
+    sleep 1.0
+    assert_selector "button", text: "Delete List"
 
     accept_confirm do
       click_button "Delete List"

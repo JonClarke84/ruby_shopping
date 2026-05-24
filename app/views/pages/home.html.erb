@@ -18,7 +18,10 @@
 
 <div class="marquee-container">
   <div class="marquee-text">
-    &#9733; Welcome visitor! &#9733; This page has been online since 1997 &#9733; You are visitor number <%= number_with_delimiter(@visitor_count) %> &#9733; Last updated: February 26, 2026 &#9733; Best viewed at 800x600 &#9733; Sign my guestbook!! &#9733;
+    &#9733; Welcome visitor! &#9733; This page has been online since 1997 &#9733; You are visitor number <%= number_with_delimiter(@visitor_count) %> &#9733; Last updated: May 22, 2026 &#9733; Best viewed at 800x600 &#9733; Sign my guestbook!! &#9733;
+    <% if @recent_items.any? %>
+      &#128722; RECENTLY ADDED: <%= @recent_items.first.item.name %> <%= time_ago_in_words(@recent_items.first.created_at) %> ago! &#128722;
+    <% end %>
   </div>
 </div>
 
@@ -92,6 +95,29 @@
         <a href="/shopping/" class="geo-button">&#128722; Enter Shopping List App &#128722;</a>
         <br><br>
         <p style="color: #888888; font-size: 11px;">(Requires login &mdash; it's FREE to sign up!!)</p>
+      </div>
+
+      <hr class="rainbow-hr">
+
+      <div id="activity">
+        <p style="color: #ff8800; font-weight: bold; font-size: 18px;">&#128225; Recent Activity</p>
+        <% if @recent_items.any? %>
+          <p style="color: #88ffff; font-size: 14px;">Latest additions to the shopping lists:</p>
+          <ul style="list-style-type: '&#128722; '; color: #ffffff; font-size: 13px;">
+            <% @recent_items.each do |li| %>
+              <li><%= li.item.name %> added <%= time_ago_in_words(li.created_at) %> ago</li>
+            <% end %>
+          </ul>
+        <% end %>
+
+        <% if @recent_entries.any? %>
+          <p style="color: #ffff88; font-size: 14px; margin-top: 10px;">Latest from the Guestbook:</p>
+          <ul style="list-style-type: '&#9993; '; color: #ffffff; font-size: 13px;">
+            <% @recent_entries.each do |entry| %>
+              <li><strong><%= entry.name %></strong>: "<%= truncate(entry.message, length: 30) %>"</li>
+            <% end %>
+          </ul>
+        <% end %>
       </div>
 
       <hr class="rainbow-hr">
