@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_group
-    Current.session&.selected_group
+    Current.group
   end
 
   helper_method :current_list

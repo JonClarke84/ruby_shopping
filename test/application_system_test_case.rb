@@ -7,7 +7,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   Capybara.default_max_wait_time = 10
 
   def sign_in_as(user, password: "password")
-    sleep 0.5
+    sleep 1.0
     visit new_session_path
     fill_in "email_address", with: user.email_address
     fill_in "password", with: password

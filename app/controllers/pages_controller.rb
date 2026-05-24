@@ -5,6 +5,8 @@ class PagesController < ApplicationController
   def home
     SiteCounter.increment!(:home_visits)
     @visitor_count = SiteCounter.count_for(:home_visits)
+    @recent_entries = GuestbookEntry.recent.limit(3)
+    @recent_items = ListItem.joins(:item).order(created_at: :desc).limit(5)
   end
 
   def about
