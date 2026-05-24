@@ -19,20 +19,17 @@ class ListsTest < ApplicationSystemTestCase
     fill_in "End date", with: 14.days.from_now.strftime("%Y-%m-%d")
     click_on "Create List"
 
-    begin
-      assert_selector "#list-items-section"
-    rescue Capybara::ElementNotFound => e
-      puts "DEBUG: Current path: #{current_path}"
-      puts "DEBUG: HTML: #{page.html}"
-      raise e
-    end
+    assert_selector "#list-items-section"
   end
 
   test "should destroy List" do
     visit list_url(@list)
 
+    # Wait for Turbo and page to be fully ready
+    sleep 0.5
+
     accept_confirm do
-      click_on "Delete List", match: :first
+      click_button "Delete List"
     end
 
     assert_text "List was successfully deleted."
